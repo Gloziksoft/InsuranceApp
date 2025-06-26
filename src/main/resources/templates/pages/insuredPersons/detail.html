@@ -50,7 +50,7 @@
                 </thead>
                 <tbody>
                 <tr th:each="insurance : ${insuredPerson.insurances}">
-                    <td th:text="${insurance.insuranceType?.displayName} ?: 'Neznámy typ'"></td>
+<!--                    <td th:text="${insurance.insuranceType?.displayName} ?: 'Neznámy typ'"></td>-->
                     <td th:text="${#numbers.formatDecimal(insurance.insuredAmount, 1, 'COMMA', 2, 'POINT')} + ' €'"></td>
                     <td th:text="${insurance.insuredPersonFirstName + ' ' + insurance.insuredPersonLastName}"></td>
                     <td th:text="${insurance.policyHolderFirstName + ' ' + insurance.policyHolderLastName}"></td>
