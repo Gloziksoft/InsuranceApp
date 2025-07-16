@@ -42,6 +42,7 @@ public interface InsuredPersonMapper {
     /**
      * Maps InsuredPersonDTO to InsuredPersonEntity.
      */
+    @Mapping(target = "id", ignore = true)
     InsuredPersonEntity toEntity(InsuredPersonDTO dto);
 
     /**

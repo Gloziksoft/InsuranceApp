@@ -1,15 +1,10 @@
 package com.poistenie.app.models.services;
 
-import com.poistenie.app.models.dto.EventDTO;
 import com.poistenie.app.models.dto.InsuranceDTO;
-import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-/**
- * Service interface for managing insurance policies.
- */
 public interface InsuranceService {
 
     InsuranceDTO findById(Long id);
@@ -20,6 +15,8 @@ public interface InsuranceService {
 
     List<InsuranceDTO> findByInsuredPersonId(Long insuredPersonId);
 
+    Page<InsuranceDTO> findByUserEmail(String email, Pageable pageable);
+
     InsuranceDTO create(InsuranceDTO dto);
 
     InsuranceDTO update(Long id, InsuranceDTO dto);
@@ -28,3 +25,4 @@ public interface InsuranceService {
 
     void deleteEventsWithInvalidDescriptions();
 }
+

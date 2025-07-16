@@ -22,7 +22,6 @@ public interface InsuredPersonService {
      */
     Page<InsuredPersonDTO> findByEmail(String email, Pageable pageable);
 
-
     /**
      * Retrieves all insured persons with pagination.
      */

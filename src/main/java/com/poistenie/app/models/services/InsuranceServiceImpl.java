@@ -164,6 +164,13 @@ public class InsuranceServiceImpl implements InsuranceService {
         }
     }
 
+    @Override
+    public Page<InsuranceDTO> findByUserEmail(String email, Pageable pageable) {
+        return repository.findByInsuredPerson_Email(email, pageable)
+                .map(mapper::toDTO);
+    }
+
+
     /**
      * Deletes invalid events based on description rules.
      * (currently unused, but method kept for future use)
@@ -173,3 +180,4 @@ public class InsuranceServiceImpl implements InsuranceService {
         eventService.deleteEventsWithInvalidDescriptions();
     }
 }
+

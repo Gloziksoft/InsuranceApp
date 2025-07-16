@@ -54,7 +54,8 @@
                     <td>
                         <!-- Action buttons: Edit and Delete -->
                         <a th:href="@{'/insurance/edit/' + ${insurance.id}}" class="btn btn-warning btn-sm me-1">Editovať</a>
-                        <form th:action="@{'/insurance/delete/' + ${insurance.id}}" method="post" style="display:inline;">
+                        <form th:action="@{'/insurance/delete/' + ${insurance.id}}" method="post"
+                              style="display:inline;">
                             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                             <button type="submit" class="btn btn-danger btn-sm"
                                     onclick="return confirm('Naozaj chcete poistenca odstrániť?');">
@@ -76,12 +77,17 @@
                             <span th:text="${insurance.insuredPersonFirstName + ' ' + insurance.insuredPersonLastName}"></span>
                         </a>
                     </h5>
-                    <p class="card-text"><strong>Poistník:</strong> <span th:text="${insurance.policyHolderFirstName + ' ' + insurance.policyHolderLastName}"></span></p>
-                    <p class="card-text"><strong>Poistenie:</strong> <span th:text="${insurance.insuranceType?.displayName} ?: 'Neznámy typ'"></span></p>
-                    <p class="card-text"><strong>Suma:</strong> <span th:text="${insurance.insuredAmount} + ' €'"></span></p>
+                    <p class="card-text"><strong>Poistník:</strong> <span
+                            th:text="${insurance.policyHolderFirstName + ' ' + insurance.policyHolderLastName}"></span>
+                    </p>
+                    <p class="card-text"><strong>Poistenie:</strong> <span
+                            th:text="${insurance.insuranceType?.displayName} ?: 'Neznámy typ'"></span></p>
+                    <p class="card-text"><strong>Suma:</strong> <span
+                            th:text="${insurance.insuredAmount} + ' €'"></span></p>
                     <div class="d-flex justify-content-start mt-2 gap-2">
                         <a th:href="@{'/insurance/edit/' + ${insurance.id}}" class="btn btn-warning btn-sm">Editovať</a>
-                        <form th:action="@{'/insurance/delete/' + ${insurance.id}}" method="post" style="display:inline;">
+                        <form th:action="@{'/insurance/delete/' + ${insurance.id}}" method="post"
+                              style="display:inline;">
                             <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                             <button type="submit" class="btn btn-danger btn-sm"
                                     onclick="return confirm('Naozaj chcete poistenca odstrániť?');">
@@ -105,7 +111,8 @@
                     <!-- Čísla stránok -->
                     <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
                         th:classappend="${i} == ${currentPage} ? 'active'">
-                        <a class="page-link" th:href="@{/insurance(page=${i}, keyword=${keyword})}" th:text="${i + 1}">1</a>
+                        <a class="page-link" th:href="@{/insurance(page=${i}, keyword=${keyword})}"
+                           th:text="${i + 1}">1</a>
                     </li>
 
                     <!-- Ďalšia -->

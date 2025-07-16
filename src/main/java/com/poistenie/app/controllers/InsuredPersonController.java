@@ -40,12 +40,23 @@ public class InsuredPersonController {
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "3") int size,
             @RequestParam(required = false) String search,
-            Model model
+            Model model,
+            Authentication authentication
     ) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<InsuredPersonDTO> resultPage = (search != null && !search.isBlank())
-                ? insuredPersonService.searchByName(search, pageable)
-                : insuredPersonService.getAllPaginated(pageable);
+        UserEntity currentUser = (UserEntity) authentication.getPrincipal();
+
+        Page<InsuredPersonDTO> resultPage;
+
+        if (currentUser.isAdmin()) {
+            // Admin vidí všetko, prípadne filtrované podľa search
+            resultPage = (search != null && !search.isBlank())
+                    ? insuredPersonService.searchByName(search, pageable)
+                    : insuredPersonService.getAllPaginated(pageable);
+        } else {
+            // Bežný používateľ vidí iba svoje záznamy (podľa emailu)
+            resultPage = insuredPersonService.findByEmail(currentUser.getEmail(), pageable);
+        }
 
         model.addAttribute("insuredPersons", resultPage.getContent());
         model.addAttribute("currentPage", page);

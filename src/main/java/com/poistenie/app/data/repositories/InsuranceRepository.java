@@ -7,23 +7,19 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 
-/**
- * Repository for managing InsuranceEntity persistence.
- */
 @Repository
 public interface InsuranceRepository extends JpaRepository<InsuranceEntity, Long> {
 
-    /**
-     * Finds all insurances linked to a specific insured person.
-     */
+    // Nájde všetky poistenia pre danú ID poistenca
     List<InsuranceEntity> findByInsuredPersonId(Long insuredPersonId);
 
-    /**
-     * Searches insurances by insured person's first or last name (case-insensitive).
-     */
+    // Vyhľadávanie podľa mena alebo priezviska poistenca
     Page<InsuranceEntity> findByInsuredPerson_FirstNameContainingIgnoreCaseOrInsuredPerson_LastNameContainingIgnoreCase(
             String firstName,
             String lastName,
             Pageable pageable
     );
+
+    // ⚠️ Nová metóda: Nájde všetky poistenia, kde poistenec má tento email
+    Page<InsuranceEntity> findByInsuredPerson_Email(String email, Pageable pageable);
 }

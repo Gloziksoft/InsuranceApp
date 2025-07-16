@@ -11,21 +11,24 @@ public class UserDTO {
 
     @Email(message = "Zadajte platný e-mail.")
     @NotBlank(message = "E-mail je povinný.")
-    private String email; // user's email address
+    private String email;
 
     @NotBlank(message = "Heslo je povinné.")
     @Size(min = 3, message = "Heslo musí mať aspoň 6 znakov.")
-    private String password; // user's password
+    private String password;
 
     @NotBlank(message = "Potvrdenie hesla je povinné.")
     @Size(min = 3, message = "Potvrdené heslo musí mať aspoň 6 znakov.")
-    private String confirmPassword; // password confirmation
+    private String confirmPassword;
 
-    //region: getters and setters
+    @NotBlank(message = "Meno je povinné.")
+    private String firstName;
 
-    /**
-     * Gets the user's email address.
-     */
+    @NotBlank(message = "Priezvisko je povinné.")
+    private String lastName;
+
+    // region: getters and setters
+
     public String getEmail() {
         return email;
     }
@@ -34,9 +37,6 @@ public class UserDTO {
         this.email = email;
     }
 
-    /**
-     * Gets the user's password.
-     */
     public String getPassword() {
         return password;
     }
@@ -45,9 +45,6 @@ public class UserDTO {
         this.password = password;
     }
 
-    /**
-     * Gets the password confirmation.
-     */
     public String getConfirmPassword() {
         return confirmPassword;
     }
@@ -56,5 +53,21 @@ public class UserDTO {
         this.confirmPassword = confirmPassword;
     }
 
-    //endregion
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    // endregion
 }

@@ -45,11 +45,23 @@ public class InsuranceController {
     public String listAll(@RequestParam(defaultValue = "0") int page,
                           @RequestParam(defaultValue = "3") int size,
                           @RequestParam(required = false) String keyword,
-                          Model model) {
+                          Model model,
+                          Authentication authentication) {
+
         Pageable pageable = PageRequest.of(page, size);
-        Page<InsuranceDTO> insurancePage = (keyword != null && !keyword.isEmpty())
-                ? insuranceService.search(keyword, pageable)
-                : insuranceService.findAll(pageable);
+        UserEntity currentUser = (UserEntity) authentication.getPrincipal();
+
+        Page<InsuranceDTO> insurancePage;
+
+        if (currentUser.isAdmin()) {
+            // Admin vidí všetko, alebo môže vyhľadávať
+            insurancePage = (keyword != null && !keyword.isEmpty())
+                    ? insuranceService.search(keyword, pageable)
+                    : insuranceService.findAll(pageable);
+        } else {
+            // Bežný používateľ vidí iba svoje poistenia
+            insurancePage = insuranceService.findByUserEmail(currentUser.getEmail(), pageable);
+        }
 
         model.addAttribute("insurances", insurancePage.getContent());
         model.addAttribute("currentPage", page);

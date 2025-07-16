@@ -28,5 +28,4 @@ public interface InsuredPersonRepository extends JpaRepository<InsuredPersonEnti
      * @return
      */
     Page<InsuredPersonEntity> findByEmail(String email, Pageable pageable);
-
 }

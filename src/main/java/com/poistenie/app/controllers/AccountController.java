@@ -1,8 +1,10 @@
 package com.poistenie.app.controllers;
 
+import com.poistenie.app.models.dto.InsuredPersonDTO;
 import com.poistenie.app.models.dto.UserDTO;
 import com.poistenie.app.models.exceptions.DuplicateEmailException;
 import com.poistenie.app.models.exceptions.PasswordsDoNotEqualException;
+import com.poistenie.app.models.services.InsuredPersonService;
 import com.poistenie.app.models.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,10 @@ public class AccountController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private InsuredPersonService insuredPersonService;
+
 
     /**
      * Displays the login page.
@@ -73,6 +79,14 @@ public class AccountController {
         try {
             // Attempt to create a new user
             userService.create(userDTO, false);
+            // Vytvorenie poistenca s predvolenými údajmi po registrácii používateľa
+            InsuredPersonDTO insuredPerson = new InsuredPersonDTO();
+            insuredPerson.setFirstName(userDTO.getFirstName());
+            insuredPerson.setLastName(userDTO.getLastName());
+            insuredPerson.setEmail(userDTO.getEmail());
+
+            insuredPersonService.create(insuredPerson);
+
         } catch (DuplicateEmailException e) {
             // Handle duplicate email error
             result.rejectValue("email", "error", "Email already in use.");
