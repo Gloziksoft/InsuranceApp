@@ -142,7 +142,11 @@ public class InsuredPersonController {
         }
 
         UserEntity currentUser = (UserEntity) authentication.getPrincipal();
-        if (!currentUser.canModify(insuredPerson.getEmail())) {
+
+        // Zisti aktuálny email z DB
+        InsuredPersonDTO existingPerson = insuredPersonService.findById(id);
+
+        if (!currentUser.canModify(existingPerson.getEmail())) {
             throw new AccessDeniedException("Nemáte oprávnenie upravovať tento záznam.");
         }
 

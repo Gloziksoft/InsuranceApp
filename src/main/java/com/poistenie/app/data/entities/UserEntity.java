@@ -12,7 +12,7 @@ import java.util.List;
  * Entity representing a user in the system, implementing Spring Security's UserDetails interface.
  */
 @Entity
-@Table(name = "users")
+@Table(name = "user_entity")
 public class UserEntity implements UserDetails {
 
     @Id

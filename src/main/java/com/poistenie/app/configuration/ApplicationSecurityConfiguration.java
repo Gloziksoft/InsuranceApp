@@ -16,29 +16,25 @@ public class ApplicationSecurityConfiguration {
         return http
                 .authorizeHttpRequests()
 
-                // Endpoints restricted to users with ADMIN role
-                .requestMatchers(
-                        "/insured-persons/create",
-                        "/insured-persons/edit/**",
-                        "/insured-persons/delete/**"
-                ).hasRole("ADMIN")
+                // Nový poistenec - len admin
+                .requestMatchers("/insured-persons/create").hasRole("ADMIN")
 
-                // Endpoints accessible by users with USER or ADMIN roles
+                // Bežný prístup k zoznamu, detailom, editácii a mazaniu - USER aj ADMIN
                 .requestMatchers(
                         "/insured-persons",
-                        "/insured-persons/detail/**"
+                        "/insured-persons/detail/**",
+                        "/insured-persons/edit/**",
+                        "/insured-persons/delete/**"
                 ).hasAnyRole("USER", "ADMIN")
 
-                // Public endpoints accessible without authentication
+                // Verejné stránky
                 .requestMatchers(
                         "/styles/**", "/images/**", "/scripts/**", "/fonts/**",
                         "/about-us", "/", "/account/register", "/account/login"
                 ).permitAll()
 
-                // All other requests require authentication
                 .anyRequest().authenticated()
 
-                // Configure login page and authentication parameters
                 .and()
                 .formLogin()
                 .loginPage("/account/login")
@@ -46,8 +42,6 @@ public class ApplicationSecurityConfiguration {
                 .defaultSuccessUrl("/insured-persons", true)
                 .usernameParameter("email")
                 .permitAll()
-
-                // Configure logout behavior
                 .and()
                 .logout()
                 .logoutUrl("/account/logout")
