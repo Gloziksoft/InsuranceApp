@@ -23,6 +23,23 @@ IN WINDOWS, INTELLIJ IDEA, + DB VIA XAMPP.
 Alternatively, if you want to run in Windows, the DB backup is attached and you must import it sooner.
 FILE:
 insurance_app.sql
+
+Also, you must update the `application.properties` file like this:
+
+```
+properties
+
+spring.application.name=InsuranceApp
+spring.datasource.url=jdbc:mariadb://localhost:3306/insurance_app?createDatabaseIfNotExist=true
+spring.datasource.username=root
+spring.datasource.password=
+spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+```
 ---
 
 ### 2️⃣ Run the Application in IntelliJ IDEA
@@ -31,9 +48,8 @@ insurance_app.sql
 2. Run the main class: `PoistenieAppApplication.java`.
 3. Access the app at:
 
-```
+
 http://localhost:8080
-```
 
 ---
 
@@ -122,6 +138,24 @@ Vo WINDOWS, INTELLIJ IDEA, + DB CEZ XAMPP.
 Prípadne ak chceš spustiť vo Windows tak zaloha DB je priložená a musíš ju skorej naimportovať.
 SÚBOR:
 insurance_app.sql
+
+Zároveň musíš upraviť súbor `application.properties` nasledovne:
+
+```
+properties
+
+spring.application.name=InsuranceApp
+spring.datasource.url=jdbc:mariadb://localhost:3306/insurance_app?createDatabaseIfNotExist=true
+spring.datasource.username=root
+spring.datasource.password=
+spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+```
+
 ---
 
 ### 2️⃣ Spustenie aplikácie v IntelliJ IDEA
@@ -130,9 +164,7 @@ insurance_app.sql
 2. Spusť hlavnú Spring Boot triedu: `PoistenieAppApplication.java`.
 3. Aplikácia beží na adrese:
 
-```
 http://localhost:8080
-```
 
 ---
 
