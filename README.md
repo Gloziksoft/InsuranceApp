@@ -56,19 +56,19 @@ http://localhost:8080
 ## 🖼️ Screenshots
 
 <p float="left">
-  <img src="screenshots/home.png" width="300" alt="Home" />
-  <img src="screenshots/login.png" width="300" alt="Login" />
-  <img src="screenshots/registration.png" width="300" alt="Register" />
+  <img src="screenshots/home.png" width="500" alt="Home" />
+  <img src="screenshots/login.png" width="500" alt="Login" />
+  <img src="screenshots/registration.png" width="500" alt="Register" />
 </p>
 
 <p float="left">
-  <img src="screenshots/Detail of the insured.png" width="300" alt="Profile" />
-  <img src="screenshots/list-of-insured-persons.png" width="300" alt="List of insurance policies" />
-  <img src="screenshots/list-of-insurances.png" width="300" alt="List of insurances" />
+  <img src="screenshots/detail-of-the-insured.png" width="500" alt="Profile" />
+  <img src="screenshots/list-of-insured-persons.png" width="500" alt="List of insurance policies" />
+  <img src="screenshots/list-of-insurances.png" width="500" alt="List of insurances" />
 </p>
 
 <p float="left">
-  <img src="screenshots/edit.png" width="300" alt="Edit" />
+  <img src="screenshots/edit.png" width="500" alt="Edit" />
 </p>
 
 > 📂 All screenshots are stored in the `screenshots/` folder.
@@ -150,19 +150,19 @@ http://localhost:8080
 ## 🖼️ Ukážky obrazoviek
 
 <p float="left">
-  <img src="screenshots/home.png" width="300" alt="Domovská stránka" />
-  <img src="screenshots/login.png" width="300" alt="Prihlásenie" />
-  <img src="screenshots/registration.png" width="300" alt="Registrácia" />
+  <img src="screenshots/home.png" width="500" alt="Domovská stránka" />
+  <img src="screenshots/login.png" width="500" alt="Prihlásenie" />
+  <img src="screenshots/registration.png" width="500" alt="Registrácia" />
 </p>
 
 <p float="left">
-  <img src="screenshots/detail-of-the-insured.png" width="300" alt="Profil poistenca" />
-  <img src="screenshots/list-of-insurances.png" width="300" alt="Zoznam poistencov" />
-  <img src="screenshots/list-of-insured-persons.png" width="300" alt="Zoznam poistencou" />
+  <img src="screenshots/detail-of-the-insured.png" width="500" alt="Profil poistenca" />
+  <img src="screenshots/list-of-insurances.png" width="500" alt="Zoznam poistencov" />
+  <img src="screenshots/list-of-insured-persons.png" width="500" alt="Zoznam poistencou" />
 </p>
 
 <p float="left">
-  <img src="screenshots/edit.png" width="300" alt="Úprava údajov" />
+  <img src="screenshots/edit.png" width="500" alt="Úprava údajov" />
 </p>
 
 > 📂 Všetky screenshoty sú uložené v priečinku `screenshots/`.
