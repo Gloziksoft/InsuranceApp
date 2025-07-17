@@ -51,7 +51,7 @@
                 <tbody>
                 <tr th:each="insurance : ${insuredPerson.insurances}">
                     <td th:text="${insurance.insuranceType?.displayName} ?: 'Neznámy typ'"></td>
-                    <td th:text="${#numbers.formatDecimal(insurance.insuredAmount, 1, 'COMMA', 2, 'POINT')} + ' €'"></td>
+                    <td th:text="${#numbers.formatDecimal(insurance.insuredAmount, 1, 'NONE', 2, 'COMMA')} + ' €'"></td>
                     <td th:text="${insurance.insuredPersonFirstName + ' ' + insurance.insuredPersonLastName}"></td>
                     <td th:text="${insurance.policyHolderFirstName + ' ' + insurance.policyHolderLastName}"></td>
                     <td sec:authorize="hasRole('ADMIN')">
@@ -76,7 +76,7 @@
                 <div class="card-body">
                     <h6 class="card-title" th:text="${insurance.insuranceType}">Typ</h6>
                     <p class="mb-1"><strong>Suma:</strong> <span
-                            th:text="${#numbers.formatDecimal(insurance.insuredAmount, 1, 'COMMA', 2, 'POINT')} + ' €'"></span>
+                            th:text="${#numbers.formatDecimal(insurance.insuredAmount, 1, 'NONE', 2, 'COMMA')} + ' €'"></span>
                     </p>
                     <p class="mb-1"><strong>Poistená osoba:</strong> <span
                             th:text="${insurance.insuredPersonFirstName + ' ' + insurance.insuredPersonLastName}"></span>

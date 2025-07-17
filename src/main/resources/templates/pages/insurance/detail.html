@@ -47,7 +47,7 @@
                     <span th:text="${insurance.insuranceType?.displayName} ?: 'Neznámy typ'"></span>
                 </p>
                 <p><strong>Poistná suma:</strong>
-                    <span th:text="${#numbers.formatDecimal(insurance.insuredAmount, 1, 'COMMA', 2, 'POINT')} + ' €'"></span>
+                    <span th:text="${#numbers.formatDecimal(insurance.insuredAmount, 1, 'NONE', 2, 'COMMA')} + ' €'"></span>
                 </p>
             </div>
             <div class="col-12 col-md-6">

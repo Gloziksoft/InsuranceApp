@@ -7,6 +7,7 @@ import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Positive;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
@@ -37,7 +38,7 @@ public class InsuranceDTO {
 
     @NotNull(message = "Čiastka je povinná.")
     @Positive(message = "Čiastka musí byť kladné číslo.")
-    private Double insuredAmount; // insured amount
+    private BigDecimal insuredAmount; // insured amount
 
     private String insuredPersonFirstName; // insured person's first name
     private String insuredPersonLastName; // insured person's last name
@@ -94,11 +95,11 @@ public class InsuranceDTO {
         this.endDate = endDate;
     }
 
-    public Double getInsuredAmount() {
+    public BigDecimal getInsuredAmount() {
         return insuredAmount;
     }
 
-    public void setInsuredAmount(Double insuredAmount) {
+    public void setInsuredAmount(BigDecimal insuredAmount) {
         this.insuredAmount = insuredAmount;
     }
 

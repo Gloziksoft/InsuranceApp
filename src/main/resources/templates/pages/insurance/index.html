@@ -50,7 +50,7 @@
                     </td>
                     <td th:text="${insurance.policyHolderFirstName + ' ' + insurance.policyHolderLastName}"></td>
                     <td th:text="${insurance.insuranceType?.displayName} ?: 'Neznámy typ'"></td>
-                    <td th:text="${#numbers.formatDecimal(insurance.insuredAmount, 1, 'COMMA', 2, 'POINT')} + ' €'"></td>
+                    <td th:text="${#numbers.formatDecimal(insurance.insuredAmount, 1, 'NONE', 2, 'COMMA')} + ' €'"></td>
                     <td>
                         <!-- Action buttons: Edit and Delete -->
                         <a th:href="@{'/insurance/edit/' + ${insurance.id}}" class="btn btn-warning btn-sm me-1">Editovať</a>

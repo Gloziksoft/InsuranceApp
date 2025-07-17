@@ -2,6 +2,8 @@ package com.poistenie.app.data.entities;
 
 import com.poistenie.app.data.enums.InsuranceType;
 import jakarta.persistence.*;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -34,7 +36,7 @@ public class InsuranceEntity {
     /**
      * Total amount covered by the insurance.
      */
-    private Double insuredAmount;
+    private BigDecimal insuredAmount;
 
     /**
      * The person who is covered by the insurance (insured).
@@ -89,9 +91,9 @@ public class InsuranceEntity {
     /**
      * Gets the total insured amount.
      */
-    public Double getInsuredAmount() { return insuredAmount; }
+    public BigDecimal getInsuredAmount() { return insuredAmount; }
 
-    public void setInsuredAmount(Double insuredAmount) { this.insuredAmount = insuredAmount; }
+    public void setInsuredAmount(BigDecimal insuredAmount) { this.insuredAmount = insuredAmount; }
 
     /**
      * Gets the insured person associated with this insurance.
