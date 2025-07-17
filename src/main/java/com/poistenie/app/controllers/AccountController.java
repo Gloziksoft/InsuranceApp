@@ -89,21 +89,21 @@ public class AccountController {
 
         } catch (DuplicateEmailException e) {
             // Handle duplicate email error
-            result.rejectValue("email", "error", "Email already in use.");
+            result.rejectValue("email", "error", "E-mail sa už používa.");
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userDTO", result);
             redirectAttributes.addFlashAttribute("userDTO", userDTO);
             return "redirect:/account/register";
         } catch (PasswordsDoNotEqualException e) {
             // Handle passwords mismatch error
-            result.rejectValue("password", "error", "The passwords do not match.");
-            result.rejectValue("confirmPassword", "error", "The passwords do not match.");
+            result.rejectValue("password", "error", "Heslá sa nezhodujú.");
+            result.rejectValue("confirmPassword", "error", "Heslá sa nezhodujú.");
             redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userDTO", result);
             redirectAttributes.addFlashAttribute("userDTO", userDTO);
             return "redirect:/account/register";
         }
 
         // Registration successful
-        redirectAttributes.addFlashAttribute("success", "User registered.");
+        redirectAttributes.addFlashAttribute("success", "Používateľ zaregistrovaný.");
         return "redirect:/account/login";
     }
 }
