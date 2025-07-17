@@ -1,107 +1,189 @@
-InsuranceApp
-A web application for insurance management written in Java, using Spring Boot, Thymeleaf, and Bootstrap.
+# 🛡️ InsuranceApp
 
-⚙️ How to Run the Project
-1. Start the Database with Docker
-Run the following command to start a MySQL database container:
+A simple web application for managing insurance records, built with **Java**, **Spring Boot**, **Thymeleaf**, and **Bootstrap**.
 
-bash
-Kopírovať
-Upraviť
+---
+
+## 🚀 How to Run the Project
+
+### 1️⃣ Start the Database via Docker
+
+The MySQL database runs on port **8081**. To start it, run:
+
+```bash
 docker-compose up -d
-Make sure Docker is installed and running.
+```
 
-The database will be initialized with the required schema and data automatically (see docker-compose.yml for details).
+> ✅ Make sure Docker is installed and running.
 
-2. Run the Application in IntelliJ IDEA
-Open the project in IntelliJ IDEA.
+The database is initialized automatically (check `docker-compose.yml` for details).
 
-Make sure the correct JDK and Maven are configured.
+---
 
-Run the application using the Spring Boot main class (PoistenieAppApplication.java).
+### 2️⃣ Run the Application in IntelliJ IDEA
 
-The app will be available at:
+1. Open the project in **IntelliJ IDEA**.
+2. Run the main class: `PoistenieAppApplication.java`.
+3. Access the app at:
 
-arduino
-Kopírovať
-Upraviť
+```
 http://localhost:8080
-👥 User Roles and Registration
-Admin can add and manage insured persons manually.
+```
 
-New users can register themselves via the registration form in the application.
+---
 
-🔐 Login Credentials for Testing
-Admin account
+## 👥 User Roles and Registration
 
-Email: admin@test.com
+- 👤 **Admin** can manage all insured users.
+- 📝 **New users** can register through the registration form.
+- 🔒 Regular users can only view/edit their own profile.
 
-Password: 123
+---
 
-User account
+## 🔐 Test Login Credentials
 
-Email: user@test.com
+| Role              | Email                        | Password |
+|-------------------|------------------------------|----------|
+| **Admin**         | `admin@test.com`             | `123`    |
+| **Regular User**  | `user@test.com`              | `123`    |
+| **Admin-created** | `martinnovak@test.com`       | `123`    |
+|                   | `luciakovacova@test.com`     | `123`    |
 
-Password: 123
+> ℹ️ Passwords are temporarily reduced to 3 characters for testing.
 
-Users created by admin
-These users have access only to their own profiles:
+---
 
-martinnovak@test.com / 123
+## 🖼️ Screenshots
 
-luciakovacova@test.com / 123
+<p float="left">
+  <img src="screenshots/home.png" width="300" alt="Home" />
+  <img src="screenshots/login.png" width="300" alt="Login" />
+  <img src="screenshots/register.png" width="300" alt="Register" />
+</p>
 
-Passwords are currently shortened to 3 characters for easier testing.
+<p float="left">
+  <img src="screenshots/profile.png" width="300" alt="Profile" />
+  <img src="screenshots/admin-list.png" width="300" alt="Admin List" />
+  <img src="screenshots/admin-add.png" width="300" alt="Add User" />
+</p>
 
-PoistenieApp
-Webová aplikácia na správu poistenia, vytvorená v Jave pomocou Spring Boot, Thymeleaf a Bootstrapu.
+<p float="left">
+  <img src="screenshots/edit.png" width="300" alt="Edit" />
+  <img src="screenshots/notification.png" width="300" alt="Notification" />
+</p>
 
-⚙️ Ako spustiť projekt
-1. Spustenie databázy cez Docker
-Spusť databázu pomocou Dockeru:
+> 📂 All screenshots are stored in the `screenshots/` folder.
 
-bash
-Kopírovať
-Upraviť
+---
+
+## 🛠️ Technologies Used
+
+- Java 17+
+- Spring Boot & Spring Security
+- Thymeleaf
+- Bootstrap 5
+- MySQL (via Docker)
+- Maven
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
+
+---
+
+# 🛡️ PoistenieApp
+
+Jednoduchá webová aplikácia na správu poistenia, vytvorená pomocou **Java**, **Spring Boot**, **Thymeleaf** a **Bootstrapu**.
+
+---
+
+## 🚀 Ako spustiť projekt
+
+### 1️⃣ Spustenie databázy cez Docker
+
+MySQL databáza beží na porte **8081**. Spustenie:
+
+```bash
 docker-compose up -d
-Uisti sa, že máš nainštalovaný a spustený Docker.
+```
 
-Databáza sa automaticky inicializuje pomocou definícií v docker-compose.yml.
+> ✅ Vyžaduje nainštalovaný a spustený Docker.
 
-2. Spustenie aplikácie v IntelliJ IDEA
-Otvor projekt v IntelliJ IDEA.
+Databáza sa inicializuje automaticky (viď `docker-compose.yml`).
 
-Skontroluj, že máš nastavený správny JDK a Maven.
+---
 
-Spusť aplikáciu cez hlavnú Spring Boot triedu (PoistenieAppApplication.java).
+### 2️⃣ Spustenie aplikácie v IntelliJ IDEA
 
-Aplikácia bude dostupná na adrese:
+1. Otvor projekt v **IntelliJ IDEA**.
+2. Spusť hlavnú Spring Boot triedu: `PoistenieAppApplication.java`.
+3. Aplikácia beží na adrese:
 
-arduino
-Kopírovať
-Upraviť
+```
 http://localhost:8080
-👥 Používateľské roly a registrácia
-Admin môže pridávať a spravovať poistencov manuálne.
+```
 
-Nový používateľ sa môže zaregistrovať cez formulár v aplikácii.
+---
 
-🔐 Prihlasovacie údaje na testovanie
-Admin účet
+## 👥 Používateľské roly a registrácia
 
-Email: admin@test.com
+- 👤 **Admin** môže spravovať všetkých poistencov.
+- 📝 **Nový používateľ** sa môže zaregistrovať cez registračný formulár.
+- 🔒 Bežný používateľ má prístup iba k svojmu profilu.
 
-Heslo: 123
+---
 
-Používateľský účet
+## 🔐 Prihlasovacie údaje na testovanie
 
-Email: user@test.com
+| Rola               | Email                        | Heslo |
+|--------------------|------------------------------|--------|
+| **Admin**          | `admin@test.com`             | `123`  |
+| **Používateľ**     | `user@test.com`              | `123`  |
+| **Vytvorení adminom** | `martinnovak@test.com`    | `123`  |
+|                    | `luciakovacova@test.com`     | `123`  |
 
-Heslo: 123
+> ℹ️ Heslá sú dočasne skrátené kvôli jednoduchému testovaniu.
 
-Používatelia vytvorení adminom
-Majú prístup len k svojmu vlastnému profilu:
+---
 
-martinnovak@test.com / 123
+## 🖼️ Ukážky obrazoviek
 
-luciakovacova@test.com / 123
+<p float="left">
+  <img src="screenshots/home.png" width="300" alt="Domovská stránka" />
+  <img src="screenshots/login.png" width="300" alt="Prihlásenie" />
+  <img src="screenshots/register.png" width="300" alt="Registrácia" />
+</p>
+
+<p float="left">
+  <img src="screenshots/profile.png" width="300" alt="Profil poistenca" />
+  <img src="screenshots/admin-list.png" width="300" alt="Zoznam poistencov" />
+  <img src="screenshots/admin-add.png" width="300" alt="Pridanie poistenca" />
+</p>
+
+<p float="left">
+  <img src="screenshots/edit.png" width="300" alt="Úprava údajov" />
+  <img src="screenshots/notification.png" width="300" alt="Notifikácia" />
+</p>
+
+> 📂 Všetky screenshoty sú uložené v priečinku `screenshots/`.
+
+---
+
+## 🛠️ Použité technológie
+
+- Java 17+
+- Spring Boot & Spring Security
+- Thymeleaf
+- Bootstrap 5
+- MySQL (cez Docker)
+- Maven
+
+---
+
+## 📄 Licencia
+
+Tento projekt je licencovaný pod MIT licenciou.
+
+---
