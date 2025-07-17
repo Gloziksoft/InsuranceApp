@@ -58,18 +58,17 @@ http://localhost:8080
 <p float="left">
   <img src="screenshots/home.png" width="300" alt="Home" />
   <img src="screenshots/login.png" width="300" alt="Login" />
-  <img src="screenshots/register.png" width="300" alt="Register" />
+  <img src="screenshots/registration.png" width="300" alt="Register" />
 </p>
 
 <p float="left">
-  <img src="screenshots/profile.png" width="300" alt="Profile" />
-  <img src="screenshots/admin-list.png" width="300" alt="Admin List" />
-  <img src="screenshots/admin-add.png" width="300" alt="Add User" />
+  <img src="screenshots/Detail of the insured.png" width="300" alt="Profile" />
+  <img src="screenshots/list-of-insured-persons.png" width="300" alt="List of insurance policies" />
+  <img src="screenshots/list-of-insurances.png" width="300" alt="List of insurances" />
 </p>
 
 <p float="left">
   <img src="screenshots/edit.png" width="300" alt="Edit" />
-  <img src="screenshots/notification.png" width="300" alt="Notification" />
 </p>
 
 > 📂 All screenshots are stored in the `screenshots/` folder.
@@ -153,18 +152,17 @@ http://localhost:8080
 <p float="left">
   <img src="screenshots/home.png" width="300" alt="Domovská stránka" />
   <img src="screenshots/login.png" width="300" alt="Prihlásenie" />
-  <img src="screenshots/register.png" width="300" alt="Registrácia" />
+  <img src="screenshots/registration.png" width="300" alt="Registrácia" />
 </p>
 
 <p float="left">
-  <img src="screenshots/profile.png" width="300" alt="Profil poistenca" />
-  <img src="screenshots/admin-list.png" width="300" alt="Zoznam poistencov" />
-  <img src="screenshots/admin-add.png" width="300" alt="Pridanie poistenca" />
+  <img src="screenshots/detail-of-the-insured.png" width="300" alt="Profil poistenca" />
+  <img src="screenshots/list-of-insurances.png" width="300" alt="Zoznam poistencov" />
+  <img src="screenshots/list-of-insured-persons.png" width="300" alt="Zoznam poistencou" />
 </p>
 
 <p float="left">
   <img src="screenshots/edit.png" width="300" alt="Úprava údajov" />
-  <img src="screenshots/notification.png" width="300" alt="Notifikácia" />
 </p>
 
 > 📂 Všetky screenshoty sú uložené v priečinku `screenshots/`.
