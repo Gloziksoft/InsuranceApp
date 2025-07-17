@@ -22,7 +22,7 @@ The database is initialized automatically (check `docker-compose.yml` for detail
 IN WINDOWS, INTELLIJ IDEA, + DB VIA XAMPP.
 Alternatively, if you want to run in Windows, the DB backup is attached and you must import it sooner.
 FILE:
-Insurance_app.sql
+insurance_app.sql
 ---
 
 ### 2️⃣ Run the Application in IntelliJ IDEA
@@ -121,7 +121,7 @@ Databáza sa inicializuje automaticky (viď `docker-compose.yml`).
 Vo WINDOWS, INTELLIJ IDEA, + DB CEZ XAMPP.
 Prípadne ak chceš spustiť vo Windows tak zaloha DB je priložená a musíš ju skorej naimportovať.
 SÚBOR:
-Insurance_app.sql
+insurance_app.sql
 ---
 
 ### 2️⃣ Spustenie aplikácie v IntelliJ IDEA
