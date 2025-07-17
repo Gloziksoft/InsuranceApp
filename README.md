@@ -1,74 +1,107 @@
-# PoistenieApp
+InsuranceApp
+A web application for insurance management written in Java, using Spring Boot, Thymeleaf, and Bootstrap.
 
-A simple web application for insurance management written in **Java**, using **Spring Boot**, **Thymeleaf** and **Bootstrap**.
+⚙️ How to Run the Project
+1. Start the Database with Docker
+Run the following command to start a MySQL database container:
 
-## How to run
+bash
+Kopírovať
+Upraviť
+docker-compose up -d
+Make sure Docker is installed and running.
 
-1. Import the provided database backup (SQL dump) into your local MySQL or MariaDB server.
-2. Configure database connection settings (if necessary) inside the application (`application.properties`).
-3. Run the project using your IDE (IntelliJ IDEA, Eclipse...) or directly with:
+The database will be initialized with the required schema and data automatically (see docker-compose.yml for details).
 
-   ```bash
-   ./mvnw spring-boot:run
-   ```
+2. Run the Application in IntelliJ IDEA
+Open the project in IntelliJ IDEA.
 
-4. Access the application in the browser at:
+Make sure the correct JDK and Maven are configured.
 
-   ```
-   http://localhost:8080
-   ```
+Run the application using the Spring Boot main class (PoistenieAppApplication.java).
 
-## Login credentials for testing
+The app will be available at:
 
-- **Admin account**
-    - Email: `admin@test.com`
-    - Password: `123`
+arduino
+Kopírovať
+Upraviť
+http://localhost:8080
+👥 User Roles and Registration
+Admin can add and manage insured persons manually.
 
-- **User account**
-    - Email: `user@test.com`
-    - Password: `123`
+New users can register themselves via the registration form in the application.
 
-- **Users registered by the admin**  
-  These users were created by an administrator and can access only their own profile:
-    - `martinnovak@test.com` / `123`
-    - `luciakovacova@test.com` / `123`
+🔐 Login Credentials for Testing
+Admin account
 
-*(Password length temporarily lowered to 3 characters for easier testing.)*
+Email: admin@test.com
 
-# PoistenieApp
+Password: 123
 
-Jednoduchá webová aplikácia na správu poistení vytvorená v **Java** pomocou **Spring Boot**, **Thymeleaf** a **Bootstrap**.
+User account
 
-## Ako spustiť
+Email: user@test.com
 
-1. Naimportuj dodanú zálohu databázy (SQL dump) do svojho MySQL alebo MariaDB servera.
-2. Nastav si pripojenie k databáze v projekte (ak bude treba - v `application.properties`).
-3. Spusť aplikáciu cez IDE (IntelliJ IDEA, Eclipse...) alebo cez príkazový riadok:
+Password: 123
 
-   ```bash
-   ./mvnw spring-boot:run
-   ```
+Users created by admin
+These users have access only to their own profiles:
 
-4. Otvor aplikáciu v prehliadači:
+martinnovak@test.com / 123
 
-   ```
-   http://localhost:8080
-   ```
+luciakovacova@test.com / 123
 
-## Prihlasovacie údeje na testovanie
+Passwords are currently shortened to 3 characters for easier testing.
 
-- **Admin účet**
-    - Email: `admin@test.com`
-    - Heslo: `123`
+PoistenieApp
+Webová aplikácia na správu poistenia, vytvorená v Jave pomocou Spring Boot, Thymeleaf a Bootstrapu.
 
-- **Používateľský účet**
-    - Email: `user@test.com`
-    - Heslo: `123`
+⚙️ Ako spustiť projekt
+1. Spustenie databázy cez Docker
+Spusť databázu pomocou Dockeru:
 
-- **Používatelia vytvorení administrátorom**  
-  Títo používatelia boli zaregistrovaní adminom a majú prístup iba k detailu svojho vlastného profilu:
-    - `martinnovak@test.com` / `123`
-    - `luciakovacova@test.com` / `123`
+bash
+Kopírovať
+Upraviť
+docker-compose up -d
+Uisti sa, že máš nainštalovaný a spustený Docker.
 
-*(Heslá sú zatiaľ nastavené na minimálne 3 znaky pre jednoduché testovanie.)*
+Databáza sa automaticky inicializuje pomocou definícií v docker-compose.yml.
 
+2. Spustenie aplikácie v IntelliJ IDEA
+Otvor projekt v IntelliJ IDEA.
+
+Skontroluj, že máš nastavený správny JDK a Maven.
+
+Spusť aplikáciu cez hlavnú Spring Boot triedu (PoistenieAppApplication.java).
+
+Aplikácia bude dostupná na adrese:
+
+arduino
+Kopírovať
+Upraviť
+http://localhost:8080
+👥 Používateľské roly a registrácia
+Admin môže pridávať a spravovať poistencov manuálne.
+
+Nový používateľ sa môže zaregistrovať cez formulár v aplikácii.
+
+🔐 Prihlasovacie údaje na testovanie
+Admin účet
+
+Email: admin@test.com
+
+Heslo: 123
+
+Používateľský účet
+
+Email: user@test.com
+
+Heslo: 123
+
+Používatelia vytvorení adminom
+Majú prístup len k svojmu vlastnému profilu:
+
+martinnovak@test.com / 123
+
+luciakovacova@test.com / 123
