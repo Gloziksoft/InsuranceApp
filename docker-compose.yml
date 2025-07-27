@@ -1,21 +1,24 @@
+version: '3.8'
+
 services:
   db:
     image: mariadb
-    container_name: mariadb_container
+    container_name: mariadb_container_insurance_app
     restart: always
     ports:
-      - "3307:3306"
+      - "3306:3306"
     environment:
       MARIADB_ROOT_PASSWORD: root
       MYSQL_DATABASE: insurance_app
     volumes:
-      - db_data:/var/lib/mysql
+      - db_data:/var/lib/mysql                 # perzistencia dát
+      - ./db-init-scripts:/docker-entrypoint-initdb.d   # init skripty sa spustia iba pri prvom štarte, keď je volume prázdne
     networks:
       - app_network
 
   phpmyadmin:
     image: phpmyadmin
-    container_name: phpmyadmin_container
+    container_name: insurance_app
     ports:
       - "8081:80"
     environment:
@@ -26,7 +29,7 @@ services:
 
 volumes:
   db_data:
-    external: false
+    external: false       # Docker spravuje volume automaticky, vytvorí ak neexistuje
 
 networks:
   app_network:

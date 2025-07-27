@@ -1,10 +1,7 @@
 package com.poistenie.app.models.dto;
 
 import com.poistenie.app.data.enums.InsuranceType;
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PastOrPresent;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
@@ -26,15 +23,13 @@ public class InsuranceDTO {
     @NotNull(message = "Typ poistenia je povinný.")
     private InsuranceType insuranceType; // insurance type
 
-    @NotNull(message = "Dátum začiatku platnosti je povinný.")
-    @PastOrPresent(message = "Dátum začiatku nemôže byť v budúcnosti.")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate startDate; // start date of insurance
+    @NotNull(message = "Dátum začiatku je povinný")
+    @FutureOrPresent(message = "Dátum začiatku musí byť dnes alebo v budúcnosti")
+    private LocalDate startDate;
 
-    @NotNull(message = "Dátum konca platnosti je povinný.")
-    @Future(message = "Dátum konca musí byť v budúcnosti.")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate endDate; // end date of insurance
+    @NotNull(message = "Dátum konca je povinný")
+    @Future(message = "Dátum konca musí byť v budúcnosti")
+    private LocalDate endDate;
 
     @NotNull(message = "Čiastka je povinná.")
     @Positive(message = "Čiastka musí byť kladné číslo.")
