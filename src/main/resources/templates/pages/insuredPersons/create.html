@@ -7,86 +7,84 @@
 <header th:replace="~{fragments/layout.html :: header}"></header>
 
 <div class="container py-5">
-    <main role="main">
-        <div class="card mx-auto" style="max-width: 900px;">
-            <div class="card-body">
-                <h4 class="card-title text-center mb-4">Pridať poistenca</h4>
+    <div class="card mx-auto" style="max-width: 900px;">
+        <div class="card-body">
+            <h4 class="card-title text-center mb-4">Pridať poistenca</h4>
 
-                <!-- Form for creating a new insured person -->
-                <form method="post"
-                      th:action="@{/insured-persons/create}"
-                      th:object="${insuredPerson}">
+            <!-- Form for creating a new insured person -->
+            <form method="post"
+                  th:action="@{/insured-persons/create}"
+                  th:object="${insuredPerson}">
 
-                    <div class="row">
-                        <!-- First Name field -->
-                        <div class="col-md-6 mb-3">
-                            <label for="firstName" class="form-label">Meno</label>
-                            <input id="firstName" class="form-control" th:field="*{firstName}">
-                            <small class="text-danger" th:errors="*{firstName}"></small>
-                        </div>
-
-                        <!-- Last Name field -->
-                        <div class="col-md-6 mb-3">
-                            <label for="lastName" class="form-label">Priezvisko</label>
-                            <input id="lastName" class="form-control" th:field="*{lastName}">
-                            <small class="text-danger" th:errors="*{lastName}"></small>
-                        </div>
-
-                        <!-- Age field -->
-                        <div class="col-md-6 mb-3">
-                            <label for="age" class="form-label">Vek</label>
-                            <input id="age" type="number" step="0.1" class="form-control" th:field="*{age}"
-                                   placeholder="Zadajte vek"
-                                   th:value="${insuredPerson.age != null ? insuredPerson.age : ''}"/>
-                            <small class="text-danger" th:errors="*{age}"></small>
-                        </div>
-
-                        <!-- Email field -->
-                        <div class="col-md-6 mb-3">
-                            <label for="email" class="form-label">Email</label>
-                            <input id="email" class="form-control" th:field="*{email}">
-                            <small class="text-danger" th:errors="*{email}"></small>
-                        </div>
-
-                        <!-- Phone field -->
-                        <div class="col-md-6 mb-3">
-                            <label for="phone" class="form-label">Tel. č.</label>
-                            <input id="phone" class="form-control" th:field="*{phone}">
-                            <small class="text-danger" th:errors="*{phone}"></small>
-                        </div>
-
-                        <!-- Street field -->
-                        <div class="col-md-6 mb-3">
-                            <label for="street" class="form-label">Ulica a číslo</label>
-                            <input id="street" class="form-control" th:field="*{street}">
-                            <small class="text-danger" th:errors="*{street}"></small>
-                        </div>
-
-                        <!-- City field -->
-                        <div class="col-md-6 mb-3">
-                            <label for="city" class="form-label">Mesto</label>
-                            <input id="city" class="form-control" th:field="*{city}">
-                            <small class="text-danger" th:errors="*{city}"></small>
-                        </div>
-
-                        <!-- Postal code field -->
-                        <div class="col-md-6 mb-3">
-                            <label for="postalCode" class="form-label">PSČ</label>
-                            <input id="postalCode" class="form-control" th:field="*{postalCode}">
-                            <small class="text-danger" th:errors="*{postalCode}"></small>
-                        </div>
+                <div class="row">
+                    <!-- First Name field -->
+                    <div class="col-md-6 mb-3">
+                        <label for="firstName" class="form-label">Meno</label>
+                        <input id="firstName" class="form-control" th:field="*{firstName}">
+                        <small class="text-danger" th:errors="*{firstName}"></small>
                     </div>
 
-                    <!-- Form buttons: Back and Submit -->
-                    <div class="text-center mt-4">
-                        <a th:href="@{/insured-persons}" class="btn btn-secondary me-3">Späť</a>
-                        <button type="submit" class="btn btn-primary">Uložiť</button>
+                    <!-- Last Name field -->
+                    <div class="col-md-6 mb-3">
+                        <label for="lastName" class="form-label">Priezvisko</label>
+                        <input id="lastName" class="form-control" th:field="*{lastName}">
+                        <small class="text-danger" th:errors="*{lastName}"></small>
                     </div>
 
-                </form>
-            </div>
+                    <!-- Age field -->
+                    <div class="col-md-6 mb-3">
+                        <label for="age" class="form-label">Vek</label>
+                        <input id="age" type="number" step="0.1" class="form-control" th:field="*{age}"
+                               placeholder="Zadajte vek"
+                               th:value="${insuredPerson.age != null ? insuredPerson.age : ''}"/>
+                        <small class="text-danger" th:errors="*{age}"></small>
+                    </div>
+
+                    <!-- Email field -->
+                    <div class="col-md-6 mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input id="email" class="form-control" th:field="*{email}">
+                        <small class="text-danger" th:errors="*{email}"></small>
+                    </div>
+
+                    <!-- Phone field -->
+                    <div class="col-md-6 mb-3">
+                        <label for="phone" class="form-label">Tel. č.</label>
+                        <input id="phone" class="form-control" th:field="*{phone}">
+                        <small class="text-danger" th:errors="*{phone}"></small>
+                    </div>
+
+                    <!-- Street field -->
+                    <div class="col-md-6 mb-3">
+                        <label for="street" class="form-label">Ulica a číslo</label>
+                        <input id="street" class="form-control" th:field="*{street}">
+                        <small class="text-danger" th:errors="*{street}"></small>
+                    </div>
+
+                    <!-- City field -->
+                    <div class="col-md-6 mb-3">
+                        <label for="city" class="form-label">Mesto</label>
+                        <input id="city" class="form-control" th:field="*{city}">
+                        <small class="text-danger" th:errors="*{city}"></small>
+                    </div>
+
+                    <!-- Postal code field -->
+                    <div class="col-md-6 mb-3">
+                        <label for="postalCode" class="form-label">PSČ</label>
+                        <input id="postalCode" class="form-control" th:field="*{postalCode}">
+                        <small class="text-danger" th:errors="*{postalCode}"></small>
+                    </div>
+                </div>
+
+                <!-- Form buttons: Back and Submit -->
+                <div class="text-center mt-4">
+                    <a th:href="@{/insured-persons}" class="btn btn-secondary me-3">Späť</a>
+                    <button type="submit" class="btn btn-primary">Uložiť</button>
+                </div>
+
+            </form>
         </div>
-    </main>
+    </div>
 </div>
 
 <!-- Footer section -->

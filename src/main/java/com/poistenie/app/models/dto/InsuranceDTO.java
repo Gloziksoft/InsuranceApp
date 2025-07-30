@@ -25,10 +25,12 @@ public class InsuranceDTO {
 
     @NotNull(message = "Dátum začiatku je povinný")
     @FutureOrPresent(message = "Dátum začiatku musí byť dnes alebo v budúcnosti")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate startDate;
 
     @NotNull(message = "Dátum konca je povinný")
     @Future(message = "Dátum konca musí byť v budúcnosti")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate endDate;
 
     @NotNull(message = "Čiastka je povinná.")

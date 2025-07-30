@@ -60,7 +60,8 @@
                            class="btn btn-warning btn-sm me-1">
                             Editovať
                         </a>
-                        <form th:action="@{'/insured-persons/delete/' + ${insuredPerson.id}}" method="post" style="display:inline;">
+                        <form th:action="@{'/insured-persons/delete/' + ${insuredPerson.id}}" method="post"
+                              style="display:inline;">
                             <button type="submit" class="btn btn-danger btn-sm"
                                     onclick="return confirm('Naozaj chcete poistenca odstrániť?');">
                                 Odstrániť
@@ -71,7 +72,6 @@
                 </tbody>
             </table>
         </div>
-
     </main>
 </div>
 
@@ -81,7 +81,8 @@
         <ul class="pagination">
             <!-- Predchádzajúca -->
             <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                <a class="page-link" th:href="@{/insured-persons(page=${currentPage - 1}, search=${search})}">&laquo;</a>
+                <a class="page-link"
+                   th:href="@{/insured-persons(page=${currentPage - 1}, search=${search})}">&laquo;</a>
             </li>
 
             <!-- Čísla stránok -->
@@ -92,7 +93,8 @@
 
             <!-- Ďalšia -->
             <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled'">
-                <a class="page-link" th:href="@{/insured-persons(page=${currentPage + 1}, search=${search})}">&raquo;</a>
+                <a class="page-link"
+                   th:href="@{/insured-persons(page=${currentPage + 1}, search=${search})}">&raquo;</a>
             </li>
         </ul>
     </nav>
