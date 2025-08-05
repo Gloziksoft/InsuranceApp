@@ -29,7 +29,7 @@ services:
 
 volumes:
   db_data:
-    external: false       # Docker spravuje volume automaticky, vytvorí ak neexistuje
+    external: true       # Docker spravuje volume automaticky, vytvorí ak neexistuje
 
 networks:
   app_network:
