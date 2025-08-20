@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head th:replace="~{fragments/layout.html :: head}"></head>
-<body>
+
+<body class="d-flex flex-column min-vh-100">
 
 <!-- Header section -->
 <header th:replace="~{fragments/layout.html :: header}"></header>
@@ -23,7 +24,7 @@
         </div>
 
         <!-- Welcome message in Slovak -->
-        <div class="text-center">
+        <div class="text-center py-4">
             <h1 class="mt-4">Vitajte v PoistenieApp</h1>
             <p class="lead">
                 Zabezpečte svoju budúcnosť s našimi spoľahlivými poisťovacími službami.

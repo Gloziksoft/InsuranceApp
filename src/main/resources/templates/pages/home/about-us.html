@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head th:replace="~{fragments/layout.html :: head}"></head>
-<body>
+
+<body class="d-flex flex-column min-vh-100">
 
 <!-- Header section -->
 <header th:replace="~{fragments/layout.html :: header}"></header>
@@ -15,7 +16,7 @@
     </div>
 
     <!-- Application logo -->
-    <div class="text-center mt-3">
+    <div class="text-center mt-3 py-5">
         <img th:src="@{/images/poistenie_logo.webp}" alt="Poistenie Logo" class="img-fluid rounded" width="400"
              height="400"/>
     </div>
