@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head th:replace="~{fragments/layout.html :: head}"></head>
 
-<body>
+<body class="d-flex flex-column min-vh-100">
 
 <!-- Header section -->
 <header th:replace="~{fragments/layout.html :: header}"></header>
@@ -14,7 +14,7 @@
 <div class="py-2 flash-message message-error" th:if="${param.error}">Invalid email or password.</div>
 
 <!-- Main login form section -->
-<div class="container d-flex justify-content-center align-items-center vh-100">
+<div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
     <div class="card p-4 shadow-lg" style="width: 350px; background: white; border-radius: 8px;">
         <!-- Login title -->
         <h2 class="text-center mb-3">Prihlásenie</h2>
