@@ -20,8 +20,8 @@ public class InsuredPersonDTO {
     @NotBlank(message = "Priezvisko je povinné")
     private String lastName; // last name
 
-    @NotNull(message = "Age must be provided.")
-    @PositiveOrZero(message = "Age must be 0 or greater.")
+    @NotNull(message = "Je potrebné uviesť vek.")
+    @PositiveOrZero(message = "Vek musí byť 0 alebo vyšší.")
     private Double age; // age
 
     @Email(message = "Zadajte platný email")
