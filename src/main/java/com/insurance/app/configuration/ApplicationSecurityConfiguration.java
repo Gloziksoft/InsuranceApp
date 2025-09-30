@@ -16,6 +16,8 @@ public class ApplicationSecurityConfiguration {
         return http
                 .authorizeHttpRequests()
 
+                .requestMatchers("/insurance/*/events/reports/**").hasRole("ADMIN")
+
                 // Nový poistenec - len admin
                 .requestMatchers("/insured-persons/create").hasRole("ADMIN")
 
