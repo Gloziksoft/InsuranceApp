@@ -12,8 +12,8 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.poistenie</groupId>
-    <artifactId>poistenie-app</artifactId>
+    <groupId>com.insurance</groupId>
+    <artifactId>insurance-app</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
     <properties>
