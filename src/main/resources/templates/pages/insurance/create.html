@@ -49,9 +49,8 @@
         <!-- Select insurance type -->
         <div class="mb-3">
             <label for="insuranceType" class="form-label">Typ poistenia</label>
-            <select id="insuranceType" th:field="*{insuranceType}" class="form-control">
-                <option value="">-- Vyber typ poistenia --</option>
-                <option th:each="type : ${T(com.poistenie.app.data.enums.InsuranceType).values()}"
+            <select id="insuranceType" class="form-control" th:field="*{insuranceType}">
+                <option th:each="type : ${insuranceTypes}"
                         th:value="${type}"
                         th:text="${type.displayName}">
                 </option>

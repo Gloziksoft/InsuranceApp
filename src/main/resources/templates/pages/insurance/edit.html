@@ -23,9 +23,9 @@
                     <div class="mb-3">
                         <label for="insuranceType" class="form-label">Typ poistenia</label>
                         <select id="insuranceType" class="form-control" th:field="*{insuranceType}">
-                            <option th:each="type : ${T(com.poistenie.app.data.enums.InsuranceType).values()}"
+                            <option th:each="type : ${insuranceTypes}"
                                     th:value="${type}"
-                                    th:text="${type.displayName}">
+                                    th:text="${type}">
                             </option>
                         </select>
                         <small class="text-danger" th:errors="*{insuranceType}"></small>

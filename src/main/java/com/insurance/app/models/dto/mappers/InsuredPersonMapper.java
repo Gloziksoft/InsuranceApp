@@ -15,13 +15,18 @@ import org.mapstruct.MappingTarget;
 public interface InsuredPersonMapper {
 
     /**
-     * Maps InsuredPersonEntity to InsuredPersonDTO.
+     * Maps InsuredPersonEntity to InsuredPersonDTO (bez poistiek - na listing).
      */
+    @Mapping(target = "insurances", ignore = true) // 🚀 zabráni LazyInitializationException
     InsuredPersonDTO toDTO(InsuredPersonEntity entity);
 
     /**
+     * Maps InsuredPersonEntity to InsuredPersonDTO (s poistkami - na detail).
+     */
+    InsuredPersonDTO toDTOWithInsurances(InsuredPersonEntity entity);
+
+    /**
      * Maps InsuranceEntity to InsuranceDTO.
-     * Extracts fields from insuredPerson and policyHolder entities.
      */
     @Mapping(target = "insuredPersonFirstName", source = "insuredPerson.firstName")
     @Mapping(target = "insuredPersonLastName", source = "insuredPerson.lastName")
@@ -33,7 +38,6 @@ public interface InsuredPersonMapper {
 
     /**
      * Maps InsuranceDTO to InsuranceEntity.
-     * Ignores setting insuredPerson and policyHolder (handled separately).
      */
     @Mapping(target = "insuredPerson", ignore = true)
     @Mapping(target = "policyHolder", ignore = true)
@@ -45,13 +49,8 @@ public interface InsuredPersonMapper {
     @Mapping(target = "id", ignore = true)
     InsuredPersonEntity toEntity(InsuredPersonDTO dto);
 
-    /**
-     * Updates an existing InsuredPersonDTO from InsuredPersonEntity.
-     */
     void updateInsuredPersonDTO(InsuredPersonEntity source, @MappingTarget InsuredPersonDTO target);
 
-    /**
-     * Updates an existing InsuredPersonEntity from InsuredPersonDTO.
-     */
     void updateInsuredPersonEntity(InsuredPersonDTO source, @MappingTarget InsuredPersonEntity target);
 }
+

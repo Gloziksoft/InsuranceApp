@@ -1,13 +1,13 @@
 package com.insurance.app.models.services;
 
 import com.insurance.app.data.entities.InsuredPersonEntity;
-import com.insurance.app.models.dto.InsuredPersonDTO;
 import com.insurance.app.data.repositories.InsuredPersonRepository;
+import com.insurance.app.models.dto.InsuredPersonDTO;
 import com.insurance.app.models.dto.mappers.InsuredPersonMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -19,20 +19,23 @@ import java.util.stream.Collectors;
 @Service
 public class InsuredPersonServiceImpl implements InsuredPersonService {
 
-    @Autowired
-    private InsuredPersonRepository repository;
+    private final InsuredPersonRepository repository;
+    private final InsuredPersonMapper mapper;
 
-    @Autowired
-    private InsuredPersonMapper mapper;
+    public InsuredPersonServiceImpl(InsuredPersonRepository repository,
+                                    InsuredPersonMapper mapper) {
+        this.repository = repository;
+        this.mapper = mapper;
+    }
 
     /**
      * Searches insured persons by name (first name or last name).
      */
     @Override
     public Page<InsuredPersonDTO> searchByName(String name, Pageable pageable) {
-        Page<InsuredPersonEntity> result = repository
-                .findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(name, name, pageable);
-        return result.map(mapper::toDTO);
+        return repository
+                .findByFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(name, name, pageable)
+                .map(mapper::toDTO);
     }
 
     @Override
@@ -40,7 +43,6 @@ public class InsuredPersonServiceImpl implements InsuredPersonService {
         return repository.findByEmail(email, pageable)
                 .map(mapper::toDTO);
     }
-
 
     /**
      * Retrieves all insured persons with pagination support.
@@ -55,11 +57,11 @@ public class InsuredPersonServiceImpl implements InsuredPersonService {
      * Finds an insured person by ID.
      * Throws NoSuchElementException if not found.
      */
-    @Override
+    @Transactional(readOnly = true)
     public InsuredPersonDTO findById(Long id) {
-        InsuredPersonEntity entity = repository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("The insured person with ID " + id + " does not exist."));
-        return mapper.toDTO(entity);
+        InsuredPersonEntity entity = repository.findByIdWithInsurances(id)
+                .orElseThrow(() -> new NoSuchElementException("Insured person not found"));
+        return mapper.toDTOWithInsurances(entity);
     }
 
     /**
@@ -83,22 +85,20 @@ public class InsuredPersonServiceImpl implements InsuredPersonService {
 
     /**
      * Updates an existing insured person by ID.
-     * Throws NoSuchElementException if not found.
      */
     @Override
     public InsuredPersonDTO update(Long id, InsuredPersonDTO dto) {
-        InsuredPersonEntity existingEntity = repository.findById(id)
-                .orElseThrow(() -> new NoSuchElementException("The insured person with id ID " + id + " does not exist."));
+        repository.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("The insured person with ID " + id + " does not exist."));
 
         InsuredPersonEntity updatedEntity = mapper.toEntity(dto);
-        updatedEntity.setId(id); // preserve ID
+        updatedEntity.setId(id);
 
         return mapper.toDTO(repository.save(updatedEntity));
     }
 
     /**
      * Deletes an insured person by ID.
-     * Throws NoSuchElementException if not found.
      */
     @Override
     public void delete(Long id) {

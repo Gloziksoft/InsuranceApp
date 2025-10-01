@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -45,10 +46,12 @@ public class InsuranceServiceImpl implements InsuranceService {
      * @return the InsuranceDTO if found, otherwise null
      */
     @Override
+    @Transactional(readOnly = true)
     public InsuranceDTO findById(Long id) {
-        return repository.findById(id)
-                .map(mapper::toDTO)
-                .orElse(null);
+        InsuranceEntity entity = repository.findByIdWithRelations(id)
+                .orElseThrow(() -> new NoSuchElementException("Insurance with ID " + id + " was not found."));
+
+        return mapper.toDTO(entity);
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.insurance.app.controllers;
 
 import com.insurance.app.data.entities.UserEntity;
+import com.insurance.app.data.enums.InsuranceType;
 import com.insurance.app.models.dto.InsuranceDTO;
 import com.insurance.app.models.dto.InsuredPersonDTO;
 import com.insurance.app.models.services.InsuranceService;
@@ -105,6 +106,7 @@ public class InsuranceController {
     public String showCreateForm(Model model) {
         model.addAttribute("insurance", new InsuranceDTO());
         model.addAttribute("persons", insuredPersonService.findAll());
+        model.addAttribute("insuranceTypes", InsuranceType.values());
         return "pages/insurance/create";
     }
 
@@ -149,6 +151,7 @@ public class InsuranceController {
     public String editForm(@PathVariable Long id, Model model) {
         model.addAttribute("insurance", insuranceService.findById(id));
         model.addAttribute("persons", insuredPersonService.findAll());
+        model.addAttribute("insuranceTypes", InsuranceType.values());
         return "pages/insurance/edit";
     }
 
