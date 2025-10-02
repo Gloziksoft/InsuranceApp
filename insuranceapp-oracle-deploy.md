@@ -129,3 +129,71 @@ docker exec -i mariadb_container_insurance_app mariadb -uroot -proot insurance_a
   ```bash
   journalctl -xe
   ```
+  
+  # 🚀 Postup nasadenia novej verzie InsuranceApp na Oracle VM
+
+## 1. Úpravy a build na lokále (PC)
+1. Uprav kód v IntelliJ alebo inom editore.  
+2. Otestuj lokálne:
+   ```bash
+   mvn spring-boot:run
+   ```
+3. Vygeneruj nový JAR a Docker image:
+   ```bash
+   mvn clean package -DskipTests
+   docker build -t insuranceapp_app .
+   ```
+4. Otestuj image lokálne:
+   ```bash
+   docker run -p 8080:8080 insuranceapp_app
+   ```
+
+---
+
+## 2. Prenos na Oracle VM
+
+### 🅰️ Kopírovanie celého projektu
+```bash
+scp -i ~/.ssh/oracle_key.pem -r ~/Desktop/InsuranceApp ubuntu@141.144.236.66:~/
+```
+Na VM:
+```bash
+cd ~/InsuranceApp
+docker-compose down
+docker-compose up -d --build
+```
+
+### 🅱️ Prenos iba JAR súboru (rýchlejšie)
+1. Build lokálne:
+   ```bash
+   mvn clean package -DskipTests
+   ```
+2. Prenos JAR:
+   ```bash
+   scp -i ~/.ssh/oracle_key.pem target/app.jar ubuntu@141.144.236.66:~/InsuranceApp/app.jar
+   ```
+3. Na VM rebuild a spustenie:
+   ```bash
+   cd ~/InsuranceApp
+   docker-compose down
+   docker-compose up -d --build
+   ```
+
+---
+
+## 3. Overenie nasadenia
+- Logy aplikácie:
+  ```bash
+  docker logs -f springboot_insurance_app
+  ```
+
+- Skontrolovať web:  
+  👉 `https://insuranceapp.gloziksoft.sk`
+
+---
+
+## 💡 Tipy do praxe
+- Použi **Git + pull** namiesto scp → jednoduchšie nasadzovanie.  
+- V budúcnosti zváž **CI/CD pipeline** (GitHub Actions, GitLab CI).  
+- DB nechaj bežať stále, rebuilduj len appku.
+
