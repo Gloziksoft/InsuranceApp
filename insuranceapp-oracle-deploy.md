@@ -197,3 +197,13 @@ docker-compose up -d --build
 - V budúcnosti zváž **CI/CD pipeline** (GitHub Actions, GitLab CI).  
 - DB nechaj bežať stále, rebuilduj len appku.
 
+2. Alias v shelli (rýchly trik)
+
+Do ~/.bashrc alebo ~/.zshrc pridaj:
+
+alias oraclevm='ssh -i ~/.ssh/id_rsa ubuntu@141.144.236.66'
+
+
+Potom stačí:
+
+oraclevm

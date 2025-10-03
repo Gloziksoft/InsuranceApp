@@ -25,7 +25,7 @@
                         <select id="insuranceType" class="form-control" th:field="*{insuranceType}">
                             <option th:each="type : ${insuranceTypes}"
                                     th:value="${type}"
-                                    th:text="${type}">
+                                    th:text="${type.displayName}">
                             </option>
                         </select>
                         <small class="text-danger" th:errors="*{insuranceType}"></small>
