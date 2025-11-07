@@ -1,8 +1,6 @@
-<<<<<<< Updated upstream
-version: '3.8'
-=======
 version: "3.8"
->>>>>>> Stashed changes
+
+services:
 
 services:
   app:
