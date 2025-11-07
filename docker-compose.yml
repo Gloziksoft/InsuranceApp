@@ -1,29 +1,49 @@
+<<<<<<< Updated upstream
 version: '3.8'
+=======
+version: "3.8"
+>>>>>>> Stashed changes
 
 services:
-  db:
-    image: mariadb
-    container_name: mariadb_container_insurance_app
-    restart: always
+  app:
+    build: .
+    container_name: springboot_insurance_app
     ports:
-      - "3307:3306"
-    environment:
-      MARIADB_ROOT_PASSWORD: root
-      MYSQL_DATABASE: insurance_app
-    volumes:
-      - db_data_insurance:/var/lib/mysql
-      - ./db-init-scripts:/docker-entrypoint-initdb.d
+      - "8080:8080"
+    depends_on:
+      - db
     networks:
       - insurance_network
 
-  phpmyadmin:
-    image: phpmyadmin
-    container_name: insurance_phpmyadmin
+  db:
+    image: mariadb:10.6
+    container_name: mariadb_container_insurance_app
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: insurance
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
     ports:
-      - "8081:80"
+      - "3307:3306"
+    networks:
+      - insurance_network
+    volumes:
+      - insurance_db_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: phpmyadmin_insurance
+    restart: always
     environment:
       PMA_HOST: db
       PMA_PORT: 3306
+      PMA_USER: user
+      PMA_PASSWORD: password
+    ports:
+      - "8081:80"
+    depends_on:
+      - db
     networks:
       - insurance_network
 
@@ -52,10 +72,8 @@ services:
       - insurance_network
 
 volumes:
-  db_data_insurance:
-    external: false
+  insurance_db_data:
 
 networks:
   insurance_network:
     driver: bridge
-
