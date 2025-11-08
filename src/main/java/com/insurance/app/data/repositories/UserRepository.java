@@ -1,13 +1,13 @@
 package com.insurance.app.data.repositories;
 
 import com.insurance.app.data.entities.UserEntity;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 /**
  * Repository for managing UserEntity persistence.
  */
-public interface UserRepository extends CrudRepository<UserEntity, Long> {
+public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     /**
      * Finds a user by their email address.

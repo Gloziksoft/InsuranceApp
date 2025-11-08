@@ -1,50 +1,35 @@
-version: "3.8"
+version: '3.8'
 
 services:
-
-services:
-  app:
-    build: .
-    container_name: springboot_insurance_app
-    ports:
-      - "8080:8080"
-    depends_on:
-      - db
-    networks:
-      - insurance_network
-
+  # 🐬 Databáza (MariaDB)
   db:
-    image: mariadb:10.6
+    image: mariadb
     container_name: mariadb_container_insurance_app
     restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: insurance
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
     ports:
       - "3307:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: root
+      MYSQL_DATABASE: insurance_app
+    volumes:
+      - db_data_insurance:/var/lib/mysql
+      - ./db-init-scripts:/docker-entrypoint-initdb.d
     networks:
       - insurance_network
-    volumes:
-      - insurance_db_data:/var/lib/mysql
 
+  # 🧮 PhpMyAdmin
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin
-    container_name: phpmyadmin_insurance
-    restart: always
+    image: phpmyadmin
+    container_name: insurance_phpmyadmin
+    ports:
+      - "8081:80"
     environment:
       PMA_HOST: db
       PMA_PORT: 3306
-      PMA_USER: user
-      PMA_PASSWORD: password
-    ports:
-      - "8081:80"
-    depends_on:
-      - db
     networks:
       - insurance_network
 
+  # ☕ Spring Boot aplikácia
   app:
     build: .
     container_name: springboot_insurance_app
@@ -54,23 +39,27 @@ services:
     ports:
       - "8080:8080"
     environment:
+      # 🔹 Aktivácia profilu "prod"
+      SPRING_PROFILES_ACTIVE: prod
+
       # DATABASE
       SPRING_DATASOURCE_URL: jdbc:mariadb://db:3306/insurance_app?createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
 
-      # EMAIL (bezpečné uloženie)
+      # EMAIL
       MAIL_USERNAME: test@gloziksoft.sk
       MAIL_PASSWORD: Baxe32kh754!
 
-      # SERVER (prístup zvonku)
+      # SERVER
       SERVER_ADDRESS: 0.0.0.0
       SERVER_PORT: 8080
     networks:
       - insurance_network
 
 volumes:
-  insurance_db_data:
+  db_data_insurance:
+    external: false
 
 networks:
   insurance_network:
