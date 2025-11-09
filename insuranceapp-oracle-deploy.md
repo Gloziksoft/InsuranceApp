@@ -4,7 +4,7 @@
 ```bash
 ssh -i ~/.ssh/oracle_key.pem ubuntu@IP_ADRESA_VM
 ```
-👉 `IP_ADRESA_VM` je napr. `141.144.236.66`  
+👉 `IP_ADRESA_VM` je napr. `92.5.127.201`  
 👉 SSH kľúč je ten, čo máš uložený v Oracle Console.
 
 ---
