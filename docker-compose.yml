@@ -1,7 +1,9 @@
 version: '3.8'
 
 services:
+  # ===============================
   # 🐬 Databáza (MariaDB)
+  # ===============================
   db:
     image: mariadb
     container_name: mariadb_container_insurance_app
@@ -17,20 +19,29 @@ services:
     networks:
       - insurance_network
 
+  # ===============================
   # 🧮 PhpMyAdmin
+  # ===============================
   phpmyadmin:
     image: phpmyadmin
     container_name: insurance_phpmyadmin
+    restart: always
     ports:
       - "8081:80"
     environment:
       PMA_HOST: db
       PMA_PORT: 3306
+    depends_on:
+      - db
     networks:
       - insurance_network
 
+  # ===============================
   # ☕ Spring Boot aplikácia
+  # ===============================
   app:
+    # 👇 TU prepínaš local / prod
+    profiles: ["prod"]  # ← prepnúť na "local", ak chceš vypnúť app v Dockeri
     build: .
     container_name: springboot_insurance_app
     restart: always
@@ -39,7 +50,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      # 🔹 Aktivácia profilu "prod"
+      # Aktivuje správny Spring profil
       SPRING_PROFILES_ACTIVE: prod
 
       # DATABASE
@@ -57,10 +68,13 @@ services:
     networks:
       - insurance_network
 
+# ===============================
+# 🧱 VOLUMES & NETWORKS
+# ===============================
 volumes:
   db_data_insurance:
-    external: false
 
 networks:
   insurance_network:
     driver: bridge
+
