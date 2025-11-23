@@ -120,6 +120,7 @@ public class InsuranceController {
         insurance.setInsuredPersonId(personId);
         model.addAttribute("insurance", insurance);
         model.addAttribute("persons", insuredPersonService.findAll());
+        model.addAttribute("insuranceTypes", InsuranceType.values());
         return "pages/insurance/create";
     }
 
