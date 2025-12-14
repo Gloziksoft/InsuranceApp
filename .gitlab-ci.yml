@@ -13,13 +13,9 @@ build-and-push-job:
     - docker
   image: docker:24.0.5
   variables:
-    # Kritické premenné pre komunikáciu s D-I-D službou
-    DOCKER_HOST: tcp://127.0.0.1:2375
-    DOCKER_TLS_CERTDIR: ""
+  
   services:
-    # Service je D-I-D kontajner, ktorý nám umožní volať príkazy 'docker'
-    - name: docker:24.0.5-dind
-      # ALIAS: docker bol odstránený kvôli chybe "Cannot link to a non running container"
+    
   script:
     # --- FIX RIEŠIACI NAČASOVANIE (Race Condition) ---
     - echo "Cakam na Docker Daemon v D-I-D kontajneri (max 30s)..."
