@@ -14,31 +14,29 @@ spec:
     spec:
       containers:
         - name: insurance-app
-          image: gloziksoft/insurance-app:2.0
+          # >>> OPRAVENÝ RIADOK: Použi svoj GitLab Registry Image
+          image: registry.gitlab.com/gloziksoft/insuranceapp:latest
           ports:
             - containerPort: 8080
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: prod
-
             - name: MAIL_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: mail-secret
                   key: username
-
             - name: MAIL_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: mail-secret
                   key: password
-
             - name: SPRING_DATASOURCE_URL
               value: jdbc:mariadb://db:3306/insurance_app?createDatabaseIfNotExist=true
-
             - name: SPRING_DATASOURCE_USERNAME
               value: root
-
             - name: SPRING_DATASOURCE_PASSWORD
               value: root
-
+      # >>> PRIDANÁ SEKCIA: Odkaz na vytvorený Secret
+      imagePullSecrets:
+      - name: gitlab-registry-secret
