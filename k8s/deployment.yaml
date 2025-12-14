@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: insurance-app
-          image: registry.gitlab.com/nixdev/gloziksoft/insuranceapp:2.0
+          image: registry.gitlab.com/nixdev/Gloziksoft/insuranceapp:2.0
           ports:
             - containerPort: 8080
           env:
