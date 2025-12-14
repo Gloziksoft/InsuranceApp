@@ -209,7 +209,7 @@ http://localhost:8080
 
 > 📂 Všetky screenshoty sú uložené v priečinku `screenshots/`.
 
----
+--- 
 
 ## 🛠️ Použité technológie
 
