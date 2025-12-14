@@ -3,61 +3,30 @@ stages:
   - deploy
 
 variables:
-  # Cesta k tvojmu Image (z deployment.yaml)
   IMAGE_NAME: registry.gitlab.com/gloziksoft/insuranceapp
-  # Nazov Deploymentu, ktory chceme aktualizovat
   K8S_DEPLOYMENT: insurance-app
 
-# =========================================================
-# FÁZA 1: BUILD A PUSH (Vytvorenie Image a nahratie do Registry)
-# =========================================================
 build-and-push-job:
   stage: build_push
-  # Pouzivame Docker-in-Docker (dind) pre buildovanie Image
   image: docker:24.0.5
   services:
     - docker:24.0.5-dind
-  
-  # Pouzije sa tvoj lokalny Runner, ktory ma priamy pristup k K3s
   tags:
     - docker
-  
   script:
-    # 1. Prihlasenie do GitLab Registry (automaticka autentifikacia GitLabom)
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
-    
-    # 2. Vytvorenie Image s unikatnym tagom (pouzivame Git Commit SHA)
     - docker build -t $IMAGE_NAME:$CI_COMMIT_SHA .
-    
-    # 3. Push Image do GitLab Registry
     - docker push $IMAGE_NAME:$CI_COMMIT_SHA
 
-# =========================================================
-# FÁZA 2: DEPLOY (Aktualizácia K3s Deploymentu)
-# =========================================================
 deploy-to-k3s-job:
   stage: deploy
-  # Pouzijeme image s kubectl (na aplikovanie K8s konfiguracie)
   image: dindue/kubectl-helm:latest 
-  
-  # Zabezpeci, ze ulohu spusti tvoj lokalny Runner
   tags:
     - k3s
-  
   script:
-    # 1. Zmenime tag v lokalnom deployment.yaml na novy, CI_COMMIT_SHA
     - sed -i "s|image:.*|image: ${IMAGE_NAME}:${CI_COMMIT_SHA}|" k8s/deployment.yaml
-    
-    # 2. Nastavime KUBECONFIG, aby kubectl vedel, ako sa pripojit k tvojmu K3s
-    # K3s pouziva lokalny subor, ktory je viditelny pre Runnera
     - export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
-    
-    # 3. Aplikujeme novy deployment do K3s. Toto spusti Rolling Update.
     - kubectl apply -f k8s/deployment.yaml
-    
-    # 4. Pockame na dokoncene nasadenie (Rollout)
     - kubectl rollout status deployment/$K8S_DEPLOYMENT --timeout=120s
-    
-  # Deploy sa spusti iba po uspesnom Build
   dependencies:
     - build-and-push-job
