@@ -6,18 +6,18 @@ variables:
   IMAGE_NAME: registry.gitlab.com/gloziksoft/insuranceapp
   K8S_DEPLOYMENT: insurance-app
 
-  build-and-push-job:
+build-and-push-job:
   stage: build_push
   tags:
     - docker
-  image: docker:24.0.5 # Hlavný obraz pre vykonávanie príkazov
+  image: docker:24.0.5
+  variables:
+    # --- KRITICKÁ ZMENA: PRIDANIE D-I-D PREMENNÝCH NA ÚROVEŇ JOBU ---
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: "" # TOTO JE KĽÚČOVÉ PRE STABILNÉ D-I-D
   services:
-    # Service je samostatný kontajner, ktorý sa spúšťa ako služba na pozadí
     - name: docker:24.0.5-dind
-      # Pridáme dlhší timeout pre D-I-D
       alias: docker
-      variables:
-        DOCKER_HOST: tcp://docker:2375
   script:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
     - docker build -t $IMAGE_NAME:$CI_COMMIT_SHA .
