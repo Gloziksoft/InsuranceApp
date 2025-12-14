@@ -1,0 +1,44 @@
+# Definícia fáz
+stages:
+  - build
+
+# Definícia jobu pre build a push Docker Image
+build-image:
+  stage: build
+  # Použijeme image, ktorý už obsahuje nástroje docker a git
+  image: docker:20.10.16
+  
+  # Táto služba je potrebná, aby sme mohli v rámci jobu spúšťať príkazy docker
+  services:
+    - docker:20.10.16-dind # dind = Docker in Docker
+
+  # GitLab predvolene poskytuje tieto premenné:
+  # $CI_REGISTRY: Adresa tvojho Registry (napr. registry.gitlab.com)
+  # $CI_PROJECT_PATH: Tvoje meno/projekt (napr. NixDev/Glozikssoft/InsuranceApp)
+  # $CI_COMMIT_SHORT_SHA: Hash commitu (dobré pre unikátne verzie)
+  variables:
+    DOCKER_IMAGE_NAME: $CI_REGISTRY/$CI_PROJECT_PATH:$CI_COMMIT_SHORT_SHA # Úplný názov Image s tagom
+    DOCKER_IMAGE_LATEST: $CI_REGISTRY/$CI_PROJECT_PATH:latest # Tag 'latest'
+
+  script:
+    - echo "Spúšťam Docker build a push..."
+    
+    # 1. Prihlásenie do GitLab Registry
+    # $CI_REGISTRY_USER a $CI_REGISTRY_PASSWORD sú automaticky poskytnuté GitLabom
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+    
+    # 2. Vytvorenie Image
+    - docker build -t $DOCKER_IMAGE_NAME -t $DOCKER_IMAGE_LATEST .
+    
+    # 3. Nahratie Image do GitLab Registry
+    - docker push $DOCKER_IMAGE_NAME
+    - docker push $DOCKER_IMAGE_LATEST
+  
+  # Definovanie, kedy sa job spustí (pri každom pushnutí do master/main)
+  only:
+    - main
+    - master
+  
+  # Povolenie prístupu k Registry po dokončení jobu
+  after_script:
+    - echo "Image bol úspešne nahraný do $CI_REGISTRY/$CI_PROJECT_PATH"
