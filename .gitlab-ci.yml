@@ -14,8 +14,8 @@ build-and-push-job:
   image: docker:24.0.5
   variables:
     # Kritické premenné pre komunikáciu s D-I-D službou
-    DOCKER_HOST: tcp://docker:2375
-    DOCKER_TLS_CERTDIR: "" # Vypnutie TLS pre D-I-D
+    DOCKER_HOST: tcp://127.0.0.1:2375
+    DOCKER_TLS_CERTDIR: ""
   services:
     # Service je D-I-D kontajner, ktorý nám umožní volať príkazy 'docker'
     - name: docker:24.0.5-dind
