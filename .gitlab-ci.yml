@@ -1,30 +1,58 @@
+stages:
+  - build_push
+  - deploy
+
+variables:
+  # Globalne premenne pre referenciu
+  IMAGE_NAME: registry.gitlab.com/gloziksoft/insuranceapp
+  K8S_DEPLOYMENT: insurance-app
+
 build-and-push-job:
   stage: build_push
   tags:
     - docker
   image: docker:24.0.5
   variables:
+    # Kritické premenné pre komunikáciu s D-I-D službou
     DOCKER_HOST: tcp://docker:2375
-    DOCKER_TLS_CERTDIR: ""
+    DOCKER_TLS_CERTDIR: "" # Vypnutie TLS pre D-I-D
   services:
+    # Service je D-I-D kontajner, ktorý nám umožní volať príkazy 'docker'
     - name: docker:24.0.5-dind
-script:
-    - echo "Cakam na Docker Daemon..."
+      # ALIAS: docker bol odstránený kvôli chybe "Cannot link to a non running container"
+  script:
+    # --- FIX RIEŠIACI NAČASOVANIE (Race Condition) ---
+    - echo "Cakam na Docker Daemon v D-I-D kontajneri (max 30s)..."
     - for i in $(seq 1 30); do docker info && break; sleep 1; done
-    - echo "Docker Daemon pripraveny."
+    - echo "Docker Daemon pripraveny. Pokracujem v prihlasovani."
+    # --------------------------------------------------
+    
+    # 1. Prihlasenie do GitLab Registry
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+    
+    # 2. Vytvorenie Docker obrazu
     - docker build -t $IMAGE_NAME:$CI_COMMIT_SHA .
+    
+    # 3. Push obrazu do Registry
     - docker push $IMAGE_NAME:$CI_COMMIT_SHA
 
 deploy-to-k3s-job:
   stage: deploy
+  # Pouziva image, ktory obsahuje kubectl
   image: dindue/kubectl-helm:latest 
   tags:
     - k3s
   script:
+  # 1. Uprava deployment YAML suboru s novym tagom obrazu (CI_COMMIT_SHA)
   - 'sed -i "s|image:.*|image: ${IMAGE_NAME}:${CI_COMMIT_SHA}|" k8s/deployment.yaml'
+  
+  # 2. Nastavenie KUBECONFIG pre K3s
   - export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+  
+  # 3. Aplikovanie zmien na Kubernetes klaster
   - kubectl apply -f k8s/deployment.yaml
+  
+  # 4. Cakanie, kym sa nasadenie uspesne dokonci
   - kubectl rollout status deployment/$K8S_DEPLOYMENT --timeout=120s
 
   dependencies:
