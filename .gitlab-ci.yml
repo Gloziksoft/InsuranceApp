@@ -10,7 +10,7 @@ build-and-push-job:
     - name: docker:24.0.5-dind
       alias: docker
   script:
-    - sleep 10 # <--- PRIDAJ TENTO RÁDOK
+    - for i in $(seq 1 30); do docker info && break; sleep 1; done
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
     - docker build -t $IMAGE_NAME:$CI_COMMIT_SHA .
     - docker push $IMAGE_NAME:$CI_COMMIT_SHA
