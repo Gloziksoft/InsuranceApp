@@ -35,7 +35,7 @@ build-and-push-job:
 deploy-to-k3s-job:
   stage: deploy
   # Pouziva image, ktory obsahuje kubectl
-  image: dindue/kubectl-helm:latest 
+  image: bitnami/kubectl:latest 
   tags:
     - k3s
   script:
