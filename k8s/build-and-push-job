@@ -1,0 +1,9 @@
+build-and-push-job:
+  # ...
+  image: docker:latest
+  services:          # <--- Toto musí byť pridané
+    - docker:dind     
+  variables:
+    DOCKER_HOST: tcp://docker:2375 
+    DOCKER_TLS_CERTDIR: ""        
+  # ...

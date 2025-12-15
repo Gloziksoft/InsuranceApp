@@ -1,0 +1,13 @@
+# ... globálne nastavenia
+[[runners]]
+  name = "My Docker and K3S Runner"
+  # ...
+  executor = "docker"
+  
+  # MUSÍ OBSAHOVAŤ OBA TAGY
+  tag_list = ["docker", "k3s"] 
+  
+  [runners.docker]
+    # ...
+    privileged = true 
+    # ...
