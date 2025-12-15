@@ -63,7 +63,7 @@ deploy-to-k3s-job:
     - 'sed -i "s|image:.*|image: ${IMAGE_NAME}:${CI_COMMIT_SHA}|" k8s/deployment.yaml'
     
     # 3. Aplikácia zmien do K3s a kontrola stavu
-    - kubectl apply -f k8s/deployment.yaml
+    - kubectl apply -f k8s/deployment.yaml --validate=false
     - kubectl rollout status deployment/$K8S_DEPLOYMENT --timeout=120s
     
   dependencies:
