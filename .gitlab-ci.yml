@@ -11,39 +11,35 @@ build-and-push-job:
   stage: build_push
   tags:
     - docker
-  image: docker:latest # FIX: Pouzitie novsej verzie pre spravne API
+  image: docker:latest
   script:
-    # 1. Prihlasenie do GitLab Registry
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
-    
-    # 2. Vytvorenie Docker obrazu
     - docker build -t $IMAGE_NAME:$CI_COMMIT_SHA .
-    
-    # 3. Push obrazu do Registry
     - docker push $IMAGE_NAME:$CI_COMMIT_SHA
 
 deploy-to-k3s-job:
   stage: deploy
-  image: bitnami/kubectl:latest # FIX: Stabilny image s kubectl/helm
+  image: alpine
   tags:
     - k3s
-  variables:
-    # FIX: Nutne pre image, ktory ma ENTRYPOINT nastaveny na kubectl
-    FF_USE_FAST_ENTRYPOINT: "false"
-    ENTRYPOINT: "/bin/bash" 
+  before_script:
+    - apk add --no-cache curl git
+    - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
+    - chmod +x ./kubectl
+    - mv ./kubectl /usr/local/bin/kubectl
+    
+    # KRITICKÁ ÚPRAVA: Kopírovanie konfigu do /tmp, aby sme mohli editovať.
+    - cp /etc/rancher/k3s/k3s.yaml /tmp/kubeconfig.yaml
+    
+    # Úprava kópie: Nahradenie 127.0.0.1 (alebo localhost) správnou IP adresou:
+    - sed -i 's|https://127.0.0.1:6443|https://192.168.0.241:6443|g' /tmp/kubeconfig.yaml
+    
   script:
-  # 1. Uprava deployment YAML suboru s novym tagom obrazu (CI_COMMIT_SHA)
-  - 'sed -i "s|image:.*|image: ${IMAGE_NAME}:${CI_COMMIT_SHA}|" k8s/deployment.yaml'
-  
-  # 2. Nastavenie KUBECONFIG pre K3s
-  # DÔLEŽITÉ: Runner musí mať namapovaný KUBECONFIG subor v config.toml!
-  - export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
-  
-  # 3. Aplikovanie zmien na Kubernetes klaster
-  - kubectl apply -f k8s/deployment.yaml
-  
-  # 4. Cakanie, kym sa nasadenie uspesne dokonci
-  - kubectl rollout status deployment/$K8S_DEPLOYMENT --timeout=120s
-
+    - export KUBECONFIG=/tmp/kubeconfig.yaml # <--- Používame upravenú kópiu v /tmp
+    - 'sed -i "s|image:.*|image: ${IMAGE_NAME}:${CI_COMMIT_SHA}|" k8s/deployment.yaml'
+    
+    # Aplikácia zmien do K3s
+    - kubectl apply -f k8s/deployment.yaml
+    - kubectl rollout status deployment/$K8S_DEPLOYMENT --timeout=120s
   dependencies:
     - build-and-push-job
