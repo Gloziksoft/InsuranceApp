@@ -6,49 +6,55 @@ variables:
   # Globalne premenne pre referenciu
   IMAGE_NAME: registry.gitlab.com/gloziksoft/insuranceapp
   K8S_DEPLOYMENT: insurance-app
+  # Premenná pre KUBECONFIG v kontajneri
+  # Táto cesta zodpovedá mountu z config.toml
+  KUBECONFIG_PATH: /root/.kube/config
 
 # ==============================================================================
-# 1. OPRAVENÁ ETAPA: BUILD & PUSH (Riešenie Health Check a D-in-D zlyhania)
+# 1. OPRAVENÁ ETAPA: BUILD & PUSH (Používa D-o-D cez socket mount)
 # ==============================================================================
 build-and-push-job:
   stage: build_push
   tags:
     - docker
+  # Používame obraz, ktorý má Docker CLI
   image: docker:latest
-    
+  
+  # Odstránili sme D-in-D služby a premenné!
+  
   script:
-    # Upozornenie: sleep 5 je teraz voliteľné, ale necháme ho pre vyššiu spoľahlivosť
-    - echo "Waiting 5s for Docker daemon to stabilize..."
-    - sleep 5
+    # Čakanie (sleep) už nie je nutné, pretože sa pripájame k hostiteľskému Dockeru okamžite
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
     - docker build -t $IMAGE_NAME:$CI_COMMIT_SHA .
     - docker push $IMAGE_NAME:$CI_COMMIT_SHA
 
 # ==============================================================================
-# 2. ETAPA: DEPLOY (Zabezpečenie kubectl a k3s prístupu)
+# 2. OPRAVENÁ ETAPA: DEPLOY (Používa namountovaný Kubeconfig)
 # ==============================================================================
 deploy-to-k3s-job:
   stage: deploy
   image: alpine
-  # DÔLEŽITÉ: Runner s tagom 'k3s' musí byť aktívny (čo sme riešili v config.toml)
   tags:
     - k3s
   before_script:
-    # Inštalácia kubectl
+    # 1. Inštalácia kubectl
     - apk add --no-cache curl git
     - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
     - chmod +x ./kubectl
     - mv ./kubectl /usr/local/bin/kubectl
     
-    # Prístup ku Kubeconfig (ak Runner beží na k3s serveri)
-    - cp /etc/rancher/k3s/k3s.yaml /tmp/kubeconfig.yaml
-    - sed -i 's|https://127.0.0.1:6443|https://192.168.0.241:6443|g' /tmp/kubeconfig.yaml
-    
+    # 2. Nastavenie Kubeconfigu (teraz v ceste /root/.kube/config)
+    # Odstránili sme neúspešný príkaz 'cp'
+    - sed -i 's|https://127.0.0.1:6443|https://192.168.0.241:6443|g' $KUBECONFIG_PATH
+      
   script:
-    - export KUBECONFIG=/tmp/kubeconfig.yaml
+    # 1. Nastavíme KUBECONFIG na namountovanú cestu
+    - export KUBECONFIG=$KUBECONFIG_PATH
+    
+    # 2. Aktualizácia deployment.yaml
     - 'sed -i "s|image:.*|image: ${IMAGE_NAME}:${CI_COMMIT_SHA}|" k8s/deployment.yaml'
     
-    # Aplikácia zmien do K3s a kontrola stavu
+    # 3. Aplikácia zmien do K3s a kontrola stavu
     - kubectl apply -f k8s/deployment.yaml
     - kubectl rollout status deployment/$K8S_DEPLOYMENT --timeout=120s
     
