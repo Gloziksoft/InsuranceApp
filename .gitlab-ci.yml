@@ -31,7 +31,7 @@ build-and-push-job:
     
     # 3. Push obrazu do Registry
     - docker push $IMAGE_NAME:$CI_COMMIT_SHA
-
+    
 deploy-to-k3s-job:
   stage: deploy
   image: bitnami/kubectl:latest
