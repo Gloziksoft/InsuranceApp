@@ -19,7 +19,7 @@ build-and-push-job:
 
 deploy-to-k3s-job:
   stage: deploy
-  image: dindue/helm-kubectl:latest # Zmena image
+  image: dindue/helm-kubectl:latest # Používame obraz so správnym ENTRYPOINTom
   tags:
     - k3s
   script:
