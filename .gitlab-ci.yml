@@ -19,10 +19,17 @@ build-and-push-job:
 
 deploy-to-k3s-job:
   stage: deploy
-  image: bitnami/kubectl:latest
+  image: dindue/helm-kubectl:latest # <--- KRITICKÁ ZMENA: Použitie image so správnym ENTRYPOINTom
   tags:
     - k3s
-  variables:
+  # ODSTRÁNENÁ sekcia 'variables', ktorá nefungovala
+  script:
+  - 'sed -i "s|image:.*|image: ${IMAGE_NAME}:${CI_COMMIT_SHA}|" k8s/deployment.yaml'
+  - export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+  - kubectl apply -f k8s/deployment.yaml
+  - kubectl rollout status deployment/$K8S_DEPLOYMENT --timeout=120s
+  dependencies:
+    - build-and-push-job
     FF_USE_FAST_ENTRYPOINT: "false"
     ENTRYPOINT: "/bin/bash" 
   script:
