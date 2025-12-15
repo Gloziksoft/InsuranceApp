@@ -6,30 +6,27 @@ variables:
   # Globalne premenne pre referenciu
   IMAGE_NAME: registry.gitlab.com/gloziksoft/insuranceapp
   K8S_DEPLOYMENT: insurance-app
-  # Premenná pre KUBECONFIG v kontajneri
-  # Táto cesta zodpovedá mountu z config.toml
+  # Premenná pre KUBECONFIG v kontajneri (zodpovedá mountu v config.toml)
   KUBECONFIG_PATH: /root/.kube/config
 
 # ==============================================================================
-# 1. OPRAVENÁ ETAPA: BUILD & PUSH (Používa D-o-D cez socket mount)
+# 1. ETAPA: BUILD & PUSH (Používa D-o-D cez socket mount)
 # ==============================================================================
 build-and-push-job:
   stage: build_push
   tags:
     - docker
-  # Používame obraz, ktorý má Docker CLI
   image: docker:latest
   
-  # Odstránili sme D-in-D služby a premenné!
-  
+  # Táto fáza funguje, pretože ste v config.toml nastavili volumes = ["...", "/var/run/docker.sock:/var/run/docker.sock", ...]
+    
   script:
-    # Čakanie (sleep) už nie je nutné, pretože sa pripájame k hostiteľskému Dockeru okamžite
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
     - docker build -t $IMAGE_NAME:$CI_COMMIT_SHA .
     - docker push $IMAGE_NAME:$CI_COMMIT_SHA
 
 # ==============================================================================
-# 2. OPRAVENÁ ETAPA: DEPLOY (Používa namountovaný Kubeconfig)
+# 2. ETAPA: DEPLOY (Opravená úprava Kubeconfigu)
 # ==============================================================================
 deploy-to-k3s-job:
   stage: deploy
@@ -43,15 +40,26 @@ deploy-to-k3s-job:
     - chmod +x ./kubectl
     - mv ./kubectl /usr/local/bin/kubectl
     
-    # 2. Nastavenie Kubeconfigu (teraz v ceste /root/.kube/config)
-    # Odstránili sme neúspešný príkaz 'cp'
-    - sed -i 's|https://127.0.0.1:6443|https://192.168.0.241:6443|g' $KUBECONFIG_PATH
+    # ----------------------------------------------------------------------------------
+    # 2. OPRAVA: Nahradenie sed -i za bezpečný tok, aby sa predišlo chybe "Resource busy"
+    # Súbor sa skopíruje, upraví a potom prepíše originálny súbor.
+    # ----------------------------------------------------------------------------------
+    # Krok 2a: Skúste najprv skopírovať a potom upraviť súbor na inom mieste
+    - cp $KUBECONFIG_PATH /tmp/k3s-config.yaml
+    
+    # Krok 2b: Upravte k3s IP v skopírovanej verzii (/tmp/k3s-config.yaml)
+    - sed -i 's|https://127.0.0.1:6443|https://192.168.0.241:6443|g' /tmp/k3s-config.yaml
+    
+    # Krok 2c: Overte, že zmeny fungujú (nemusíte, ale je to dobrá prax)
+    # - cat /tmp/k3s-config.yaml 
+    
+    # ----------------------------------------------------------------------------------
       
   script:
-    # 1. Nastavíme KUBECONFIG na namountovanú cestu
-    - export KUBECONFIG=$KUBECONFIG_PATH
+    # 1. Nastavíme KUBECONFIG na BEZPEČNE UPRAVENÚ CESTU
+    - export KUBECONFIG=/tmp/k3s-config.yaml 
     
-    # 2. Aktualizácia deployment.yaml
+    # 2. Aktualizácia deployment.yaml (tu sed -i funguje, lebo to nie je namountovaný súbor)
     - 'sed -i "s|image:.*|image: ${IMAGE_NAME}:${CI_COMMIT_SHA}|" k8s/deployment.yaml'
     
     # 3. Aplikácia zmien do K3s a kontrola stavu
