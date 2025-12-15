@@ -8,7 +8,7 @@ variables:
   K8S_DEPLOYMENT: insurance-app
 
 # ==============================================================================
-# 1. OPRAVENÁ ETAPA: BUILD & PUSH (Riešenie D-in-D zlyhania)
+# 1. OPRAVENÁ ETAPA: BUILD & PUSH (Riešenie Health Check a D-in-D zlyhania)
 # ==============================================================================
 build-and-push-job:
   stage: build_push
@@ -16,19 +16,22 @@ build-and-push-job:
     - docker
   image: docker:latest
   
-  # KRITICKÉ: Použitie služby Docker-in-Docker (dind)
-  # Toto rieši chybu "Cannot link to a non running container"
+  # KRITICKÉ: Použitie služby Docker-in-Docker (dind) s definovaným aliasom
   services:
-    - docker:dind
+    - name: docker:dind
+      alias: docker # Definuje alias 'docker' pre službu, aby to fungovalo s DOCKER_HOST
     
   # KRITICKÉ: Premenné na správne pripojenie k D-in-D službe
   variables:
-    DOCKER_HOST: tcp://docker:2375 # Povie Jobu, kde beží Docker démon
-    DOCKER_TLS_CERTDIR: ""        # Zjednodušenie, ak nepoužívaš TLS pre D-in-D
+    DOCKER_HOST: tcp://docker:2375 # Povie Jobu, kde beží Docker démon (pod aliasom 'docker')
+    DOCKER_TLS_CERTDIR: ""        # Zjednodušenie, ak nepoužívaš TLS
+    
+    # NOVÉ RIEŠENIE: Nariadi Runneru ignorovať zlyhanie zdravotnej kontroly (Health Check)
+    FF_DISABLE_SERVICE_READY_CHECK: "true" 
     
   script:
-    # Voliteľné: Krátke oneskorenie pre stabilné spustenie D-in-D služby
-    - echo "Waiting for Docker daemon to start..."
+    # Upozornenie: sleep 5 je teraz voliteľné, ale necháme ho pre vyššiu spoľahlivosť
+    - echo "Waiting 5s for Docker daemon to stabilize..."
     - sleep 5
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
     - docker build -t $IMAGE_NAME:$CI_COMMIT_SHA .
@@ -39,9 +42,8 @@ build-and-push-job:
 # ==============================================================================
 deploy-to-k3s-job:
   stage: deploy
-  # Pre kubectl stačí malý obraz
   image: alpine
-  # DÔLEŽITÉ: Runner s týmto tagom musí existovať (pozri ďalej)
+  # DÔLEŽITÉ: Runner s tagom 'k3s' musí byť aktívny (čo sme riešili v config.toml)
   tags:
     - k3s
   before_script:
@@ -51,8 +53,7 @@ deploy-to-k3s-job:
     - chmod +x ./kubectl
     - mv ./kubectl /usr/local/bin/kubectl
     
-    # Prístup ku Kubeconfig - toto je správne, AK Runner beží na K3s serveri
-    # Ak Runner beží na inom stroji, je lepšie použiť CI/CD premennú pre Kubeconfig.
+    # Prístup ku Kubeconfig (ak Runner beží na k3s serveri)
     - cp /etc/rancher/k3s/k3s.yaml /tmp/kubeconfig.yaml
     - sed -i 's|https://127.0.0.1:6443|https://192.168.0.241:6443|g' /tmp/kubeconfig.yaml
     
