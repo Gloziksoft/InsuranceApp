@@ -205,11 +205,11 @@ http://localhost:8080
 
 <p float="left">
   <img src="screenshots/edit.png" width="700" alt="Úprava údajov" />
-</p>
+</p> 
 
 > 📂 Všetky screenshoty sú uložené v priečinku `screenshots/`.
 
----
+--- 
 
 ## 🛠️ Použité technológie
 

@@ -40,3 +40,4 @@ spec:
       # >>> PRIDANÁ SEKCIA: Odkaz na vytvorený Secret
       imagePullSecrets:
       - name: gitlab-registry-secret
+      - name: gitlab-registry-secret
