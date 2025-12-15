@@ -1,15 +1,36 @@
+stages:
+  - build_push
+  - deploy
+
+variables:
+  # Globalne premenne pre referenciu
+  IMAGE_NAME: registry.gitlab.com/gloziksoft/insuranceapp
+  K8S_DEPLOYMENT: insurance-app
+
+build-and-push-job:
+  stage: build_push
+  tags:
+    - docker
+  image: docker:latest
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
+    - docker build -t $IMAGE_NAME:$CI_COMMIT_SHA .
+    - docker push $IMAGE_NAME:$CI_COMMIT_SHA
+
 deploy-to-k3s-job:
   stage: deploy
-  image: alpine # <--- KRITICKÁ ZMENA: Čistý obraz s Entrypointom /bin/sh
+  image: alpine # <--- ZÁKLADNÝ, NAJSPOĽAHLIVEJŠÍ IMAGE S /bin/sh ENTRYPOINTOM
   tags:
     - k3s
   before_script:
-    # Zabezpečíme, že sa nainštaluje curl, potom kubectl a nakoniec git (pre gitaly)
+    # 1. Inštalácia curl a git pre sťahovanie kubectl a Git Gitaly
     - apk add --no-cache curl git
+    # 2. Stiahnutie a inštalácia kubectl
     - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
     - chmod +x ./kubectl
     - mv ./kubectl /usr/local/bin/kubectl
   script:
+    # Nasadzovací skript
     - 'sed -i "s|image:.*|image: ${IMAGE_NAME}:${CI_COMMIT_SHA}|" k8s/deployment.yaml'
     - export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
     - kubectl apply -f k8s/deployment.yaml
