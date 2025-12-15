@@ -15,19 +15,6 @@ build-and-push-job:
   tags:
     - docker
   image: docker:latest
-  
-  # KRITICKÉ: Použitie služby Docker-in-Docker (dind) s definovaným aliasom
-  services:
-    - name: docker:dind
-      alias: docker # Definuje alias 'docker' pre službu, aby to fungovalo s DOCKER_HOST
-    
-  # KRITICKÉ: Premenné na správne pripojenie k D-in-D službe
-  variables:
-    DOCKER_HOST: tcp://docker:2375 # Povie Jobu, kde beží Docker démon (pod aliasom 'docker')
-    DOCKER_TLS_CERTDIR: ""        # Zjednodušenie, ak nepoužívaš TLS
-    
-    # NOVÉ RIEŠENIE: Nariadi Runneru ignorovať zlyhanie zdravotnej kontroly (Health Check)
-    FF_DISABLE_SERVICE_READY_CHECK: "true" 
     
   script:
     # Upozornenie: sleep 5 je teraz voliteľné, ale necháme ho pre vyššiu spoľahlivosť
