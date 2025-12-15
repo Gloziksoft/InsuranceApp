@@ -19,20 +19,24 @@ build-and-push-job:
 
 deploy-to-k3s-job:
   stage: deploy
-  image: alpine # <--- ZÁKLADNÝ, NAJSPOĽAHLIVEJŠÍ IMAGE S /bin/sh ENTRYPOINTOM
+  image: alpine
   tags:
     - k3s
   before_script:
-    # 1. Inštalácia curl a git pre sťahovanie kubectl a Git Gitaly
+    # Inštalácia nástrojov
     - apk add --no-cache curl git
-    # 2. Stiahnutie a inštalácia kubectl
     - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
     - chmod +x ./kubectl
     - mv ./kubectl /usr/local/bin/kubectl
+    
+    # KRITICKÁ ÚPRAVA: Nahradenie 127.0.0.1 správnou externou IP adresou K3s hostiteľa.
+    # Musíme upraviť kubeconfig súbor, ktorý je namapovaný do kontajnera!
+    - sed -i 's|https://127.0.0.1:6443|https://192.168.0.241:6443|g' /etc/rancher/k3s/k3s.yaml
+    
   script:
-    # Nasadzovací skript
-    - 'sed -i "s|image:.*|image: ${IMAGE_NAME}:${CI_COMMIT_SHA}|" k8s/deployment.yaml'
     - export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+    - 'sed -i "s|image:.*|image: ${IMAGE_NAME}:${CI_COMMIT_SHA}|" k8s/deployment.yaml'
+    # Teraz by už malo kubectl poznať správnu adresu servera:
     - kubectl apply -f k8s/deployment.yaml
     - kubectl rollout status deployment/$K8S_DEPLOYMENT --timeout=120s
   dependencies:
