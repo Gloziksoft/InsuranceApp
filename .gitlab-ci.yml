@@ -7,39 +7,62 @@ variables:
   IMAGE_NAME: registry.gitlab.com/gloziksoft/insuranceapp
   K8S_DEPLOYMENT: insurance-app
 
+# ==============================================================================
+# 1. OPRAVENÁ ETAPA: BUILD & PUSH (Riešenie D-in-D zlyhania)
+# ==============================================================================
 build-and-push-job:
   stage: build_push
   tags:
     - docker
   image: docker:latest
+  
+  # KRITICKÉ: Použitie služby Docker-in-Docker (dind)
+  # Toto rieši chybu "Cannot link to a non running container"
+  services:
+    - docker:dind
+    
+  # KRITICKÉ: Premenné na správne pripojenie k D-in-D službe
+  variables:
+    DOCKER_HOST: tcp://docker:2375 # Povie Jobu, kde beží Docker démon
+    DOCKER_TLS_CERTDIR: ""        # Zjednodušenie, ak nepoužívaš TLS pre D-in-D
+    
   script:
+    # Voliteľné: Krátke oneskorenie pre stabilné spustenie D-in-D služby
+    - echo "Waiting for Docker daemon to start..."
+    - sleep 5
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
     - docker build -t $IMAGE_NAME:$CI_COMMIT_SHA .
     - docker push $IMAGE_NAME:$CI_COMMIT_SHA
 
+# ==============================================================================
+# 2. ETAPA: DEPLOY (Zabezpečenie kubectl a k3s prístupu)
+# ==============================================================================
 deploy-to-k3s-job:
   stage: deploy
+  # Pre kubectl stačí malý obraz
   image: alpine
+  # DÔLEŽITÉ: Runner s týmto tagom musí existovať (pozri ďalej)
   tags:
     - k3s
   before_script:
+    # Inštalácia kubectl
     - apk add --no-cache curl git
     - curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
     - chmod +x ./kubectl
     - mv ./kubectl /usr/local/bin/kubectl
     
-    # KRITICKÁ ÚPRAVA: Kopírovanie konfigu do /tmp, aby sme mohli editovať.
+    # Prístup ku Kubeconfig - toto je správne, AK Runner beží na K3s serveri
+    # Ak Runner beží na inom stroji, je lepšie použiť CI/CD premennú pre Kubeconfig.
     - cp /etc/rancher/k3s/k3s.yaml /tmp/kubeconfig.yaml
-    
-    # Úprava kópie: Nahradenie 127.0.0.1 (alebo localhost) správnou IP adresou:
     - sed -i 's|https://127.0.0.1:6443|https://192.168.0.241:6443|g' /tmp/kubeconfig.yaml
     
   script:
-    - export KUBECONFIG=/tmp/kubeconfig.yaml # <--- Používame upravenú kópiu v /tmp
+    - export KUBECONFIG=/tmp/kubeconfig.yaml
     - 'sed -i "s|image:.*|image: ${IMAGE_NAME}:${CI_COMMIT_SHA}|" k8s/deployment.yaml'
     
-    # Aplikácia zmien do K3s
+    # Aplikácia zmien do K3s a kontrola stavu
     - kubectl apply -f k8s/deployment.yaml
     - kubectl rollout status deployment/$K8S_DEPLOYMENT --timeout=120s
+    
   dependencies:
     - build-and-push-job
