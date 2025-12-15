@@ -11,18 +11,10 @@ build-and-push-job:
   stage: build_push
   tags:
     - docker
-  image: docker:latest
-  variables:
-  
-  services:
-    
+  image: docker:latest # Fix pre Docker API (verzia 1.44+)
+  # ODSTRÁNENÉ: DOCKER-IN-DOCKER SERVICES
   script:
-    # --- FIX RIEŠIACI NAČASOVANIE (Race Condition) ---
-    - echo "Cakam na Docker Daemon v D-I-D kontajneri (max 30s)..."
-    - for i in $(seq 1 30); do docker info && break; sleep 1; done
-    - echo "Docker Daemon pripraveny. Pokracujem v prihlasovani."
-    # --------------------------------------------------
-    
+    # --- ODSTRÁNENÝ cyklus "for i in..." kvôli prechodu na hostiteľský Docker ---
     # 1. Prihlasenie do GitLab Registry
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" "$CI_REGISTRY"
     
@@ -31,24 +23,28 @@ build-and-push-job:
     
     # 3. Push obrazu do Registry
     - docker push $IMAGE_NAME:$CI_COMMIT_SHA
-    
+
 deploy-to-k3s-job:
   stage: deploy
-  image: bitnami/kubectl:latest
+  image: bitnami/kubectl:latest # Fix pre nedostupný/chybný image
   tags:
     - k3s
   variables:
+    # --- Fix pre Entrypoint chybu ---
     FF_USE_FAST_ENTRYPOINT: "false"
-    ENTRYPOINT: "/bin/bash"
+    ENTRYPOINT: "/bin/bash" 
   script:
-    # 1. Uprava deployment YAML suboru s novym tagom obrazu
-    - 'sed -i "s|image:.*|image: ${IMAGE_NAME}:${CI_COMMIT_SHA}|" k8s/deployment.yaml'
-    
-    # 2. Nastavenie KUBECONFIG pre K3s
-    - export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
-    
-    # 3. Aplikovanie zmien na Kubernetes klaster
-    - kubectl apply -f k8s/deployment.yaml
-    
-    # 4. Cakanie, kym sa nasadenie uspesne dokonci
-    - kubectl rollout status deployment/$K8S_DEPLOYMENT --timeout=120s
+  # 1. Uprava deployment YAML suboru s novym tagom obrazu (CI_COMMIT_SHA)
+  - 'sed -i "s|image:.*|image: ${IMAGE_NAME}:${CI_COMMIT_SHA}|" k8s/deployment.yaml'
+  
+  # 2. Nastavenie KUBECONFIG pre K3s
+  - export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+  
+  # 3. Aplikovanie zmien na Kubernetes klaster
+  - kubectl apply -f k8s/deployment.yaml
+  
+  # 4. Cakanie, kym sa nasadenie uspesne dokonci
+  - kubectl rollout status deployment/$K8S_DEPLOYMENT --timeout=120s
+
+  dependencies:
+    - build-and-push-job
