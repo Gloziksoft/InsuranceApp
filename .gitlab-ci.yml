@@ -38,9 +38,8 @@ deploy-to-k3s-job:
   tags:
     - k3s
   variables:
-    # --- KRITICKÝ FIX: NARIADENIE RUNNEROVI POUŽIŤ SHELL ---
     FF_USE_FAST_ENTRYPOINT: "false"
-    ENTRYPOINT: "/bin/bash" # alebo /bin/sh
+    ENTRYPOINT: "/bin/bash"
   script:
     # 1. Uprava deployment YAML suboru s novym tagom obrazu
     - 'sed -i "s|image:.*|image: ${IMAGE_NAME}:${CI_COMMIT_SHA}|" k8s/deployment.yaml'
@@ -53,12 +52,3 @@ deploy-to-k3s-job:
     
     # 4. Cakanie, kym sa nasadenie uspesne dokonci
     - kubectl rollout status deployment/$K8S_DEPLOYMENT --timeout=120s
-  
-  # 3. Aplikovanie zmien na Kubernetes klaster
-  - kubectl apply -f k8s/deployment.yaml
-  
-  # 4. Cakanie, kym sa nasadenie uspesne dokonci
-  - kubectl rollout status deployment/$K8S_DEPLOYMENT --timeout=120s
-
-  dependencies:
-    - build-and-push-job
