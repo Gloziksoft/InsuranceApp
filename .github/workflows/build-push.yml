@@ -8,6 +8,11 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    # TOTO RIEŠI CHYBU "denied: installation not allowed to Write":
+    permissions:
+      contents: read
+      packages: write
+      
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -24,5 +29,5 @@ jobs:
         with:
           context: .
           push: true
-          # TU SME TO OPRAVILI: Všetko malými písmenami natvrdo
+          # Všetko malými písmenami natvrdo, aby nebol problém s názvom
           tags: ghcr.io/gloziksoft/git_ops-k8-config/insurance-app:latest
