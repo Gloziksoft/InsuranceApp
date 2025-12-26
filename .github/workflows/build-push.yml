@@ -1,4 +1,4 @@
-name: Build and Push Insurance App
+name: Build and Push Booking App
 
 on:
   push:
@@ -30,4 +30,4 @@ jobs:
           context: .
           push: true
           # Všetko malými písmenami natvrdo, aby nebol problém s názvom
-          tags: ghcr.io/gloziksoft/git_ops-k8-config/insurance-app:latest
+          tags: ghcr.io/gloziksoft/git_ops-k8-config/booking-app:latest
