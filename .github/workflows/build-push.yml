@@ -30,4 +30,4 @@ jobs:
           context: .
           push: true
           # Všetko malými písmenami natvrdo, aby nebol problém s názvom
-          tags: ghcr.io/gloziksoft/git_ops-k8-config/booking-app:latest
+          tags: ghcr.io/gloziksoft/insuranceapp/insurance-app:latest
