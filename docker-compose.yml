@@ -1,11 +1,9 @@
-version: '3.8'
-
 services:
   # ===============================
   # 🐬 Databáza (MariaDB)
   # ===============================
   db:
-    image: mariadb
+    image: mariadb:11
     container_name: mariadb_container_insurance_app
     restart: always
     ports:
@@ -23,7 +21,7 @@ services:
   # 🧮 PhpMyAdmin
   # ===============================
   phpmyadmin:
-    image: phpmyadmin
+    image: phpmyadmin:latest
     container_name: insurance_phpmyadmin
     restart: always
     ports:
@@ -37,32 +35,27 @@ services:
       - insurance_network
 
   # ===============================
-  # ☕ Spring Boot aplikácia
+  # ☕ Spring Boot aplikácia (PROD)
   # ===============================
   app:
-    # 👇 TU prepínaš local / prod
-    profiles: ["prod"]  # ← prepnúť na "local", ak chceš vypnúť app v Dockeri
-    build: .
+    image: ghcr.io/gloziksoft/insurance-app:latest
     container_name: springboot_insurance_app
     restart: always
     depends_on:
       - db
     ports:
       - "8080:8080"
+      - "8083:8083"
     environment:
-      # Aktivuje správny Spring profil
       SPRING_PROFILES_ACTIVE: prod
 
-      # DATABASE
       SPRING_DATASOURCE_URL: jdbc:mariadb://db:3306/insurance_app?createDatabaseIfNotExist=true
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
 
-      # EMAIL
       MAIL_USERNAME: test@gloziksoft.sk
       MAIL_PASSWORD: Baxe32kh754!
 
-      # SERVER
       SERVER_ADDRESS: 0.0.0.0
       SERVER_PORT: 8080
     networks:
@@ -77,4 +70,3 @@ volumes:
 networks:
   insurance_network:
     driver: bridge
-
