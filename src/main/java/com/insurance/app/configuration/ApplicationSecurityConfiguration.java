@@ -28,7 +28,7 @@ public class ApplicationSecurityConfiguration {
                 .securityMatcher("/actuator/**")
 
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-                
+
                 .csrf(csrf -> csrf.disable())
                 .securityContext(securityContext -> securityContext.disable())
                 .requestCache(requestCache -> requestCache.disable())
