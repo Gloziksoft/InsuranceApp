@@ -1,10 +1,6 @@
 services:
-  # ===============================
-  # 🐬 Databáza (MariaDB)
-  # ===============================
   db:
     image: mariadb:11
-    container_name: mariadb_container_insurance_app
     restart: always
     ports:
       - "3307:3306"
@@ -17,29 +13,18 @@ services:
     networks:
       - insurance_network
 
-  # ===============================
-  # 🧮 PhpMyAdmin
-  # ===============================
   phpmyadmin:
     image: phpmyadmin:latest
-    container_name: insurance_phpmyadmin
     restart: always
     ports:
       - "8081:80"
-    environment:
-      PMA_HOST: db
-      PMA_PORT: 3306
     depends_on:
       - db
     networks:
       - insurance_network
 
-  # ===============================
-  # ☕ Spring Boot aplikácia (PROD)
-  # ===============================
   app:
-    image: ghcr.io/gloziksoft/insurance-app:latest
-    container_name: springboot_insurance_app
+    image: ghcr.io/gloziksoft/insurance-app:1.0.0
     restart: always
     depends_on:
       - db
@@ -47,25 +32,8 @@ services:
       - "8080:8080"
     environment:
       SPRING_PROFILES_ACTIVE: prod
-
-      SPRING_DATASOURCE_URL: jdbc:mariadb://db:3306/insurance_app?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_URL: jdbc:mariadb://db:3306/insurance_app
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: root
-
-      MAIL_USERNAME: test@gloziksoft.sk
-      MAIL_PASSWORD: Baxe32kh754!
-
-      SERVER_ADDRESS: 0.0.0.0
-      SERVER_PORT: 8080
     networks:
       - insurance_network
-
-# ===============================
-# 🧱 VOLUMES & NETWORKS
-# ===============================
-volumes:
-  db_data_insurance:
-
-networks:
-  insurance_network:
-    driver: bridge
