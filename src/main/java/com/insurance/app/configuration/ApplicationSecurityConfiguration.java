@@ -22,7 +22,7 @@ public class ApplicationSecurityConfiguration {
      * - žiadne session
      */
     @Bean
-    @Order(1)
+    @Order(0)
     public SecurityFilterChain actuatorSecurityFilterChain(HttpSecurity http) throws Exception {
         http
                 .securityMatcher("/actuator/**")
