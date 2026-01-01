@@ -12,47 +12,38 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 public class ApplicationSecurityConfiguration {
 
-    /**
-     * ===============================
-     * 🔓 ACTUATOR SECURITY (NO AUTH)
-     * ===============================
-     * - musí byť PRVÝ filter chain
-     * - žiadne login redirecty
-     * - žiadne CSRF
-     * - žiadne session
-     */
+    // ===============================
+    // 🔓 ACTUATOR SECURITY
+    // ===============================
     @Bean
     @Order(0)
     public SecurityFilterChain actuatorSecurityFilterChain(HttpSecurity http) throws Exception {
-        http
+        return http
                 .securityMatcher("/actuator/**")
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
                 .csrf(csrf -> csrf.disable())
-                .formLogin(form -> form.disable())   // 👈 KRITICKÉ
-                .logout(logout -> logout.disable()) // 👈 KRITICKÉ
+                .formLogin(form -> form.disable())
+                .logout(logout -> logout.disable())
+                .httpBasic(basic -> basic.disable())
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                );
-
-        return http.build();
+                )
+                .build();
     }
-    /**
-     * ===============================
-     * 🔐 APPLICATION SECURITY
-     * ===============================
-     */
+
+    // ===============================
+    // 🔐 APPLICATION SECURITY
+    // ===============================
     @Bean
-    @Order(2)
+    @Order(1)
     public SecurityFilterChain applicationSecurityFilterChain(HttpSecurity http) throws Exception {
-        http
+        return http
+                .securityMatcher("/**")
                 .authorizeHttpRequests(auth -> auth
 
                         .requestMatchers("/insurance/*/events/reports/**").hasRole("ADMIN")
-
-                        // Nový poistenec - len admin
                         .requestMatchers("/insured-persons/create").hasRole("ADMIN")
 
-                        // Bežný prístup - USER + ADMIN
                         .requestMatchers(
                                 "/insured-persons",
                                 "/insured-persons/detail/**",
@@ -60,7 +51,6 @@ public class ApplicationSecurityConfiguration {
                                 "/insured-persons/delete/**"
                         ).hasAnyRole("USER", "ADMIN")
 
-                        // Verejné stránky
                         .requestMatchers(
                                 "/styles/**",
                                 "/images/**",
@@ -84,16 +74,13 @@ public class ApplicationSecurityConfiguration {
                 .logout(logout -> logout
                         .logoutUrl("/account/logout")
                         .permitAll()
-                );
-
-        return http.build();
+                )
+                .build();
     }
 
-    /**
-     * ===============================
-     * 🔑 PASSWORD ENCODER
-     * ===============================
-     */
+    // ===============================
+    // 🔑 PASSWORD ENCODER
+    // ===============================
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
