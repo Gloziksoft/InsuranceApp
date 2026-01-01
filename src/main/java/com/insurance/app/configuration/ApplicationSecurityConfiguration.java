@@ -26,20 +26,16 @@ public class ApplicationSecurityConfiguration {
     public SecurityFilterChain actuatorSecurityFilterChain(HttpSecurity http) throws Exception {
         http
                 .securityMatcher("/actuator/**")
-
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-
                 .csrf(csrf -> csrf.disable())
-                .securityContext(securityContext -> securityContext.disable())
-                .requestCache(requestCache -> requestCache.disable())
-
+                .formLogin(form -> form.disable())   // 👈 KRITICKÉ
+                .logout(logout -> logout.disable()) // 👈 KRITICKÉ
                 .sessionManagement(session ->
                         session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 );
 
         return http.build();
     }
-
     /**
      * ===============================
      * 🔐 APPLICATION SECURITY
