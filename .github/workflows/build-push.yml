@@ -1,4 +1,4 @@
-name: Build and Push Docker Image
+name: Build and Push Insurance App
 
 on:
   push:
@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout source
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Set up Docker Buildx
@@ -32,5 +32,5 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/gloziksoft/APP_NAME:${{ github.sha }}
-            ghcr.io/gloziksoft/APP_NAME:prod
+            ghcr.io/gloziksoft/insurance-app:${{ github.sha }}
+            ghcr.io/gloziksoft/insurance-app:prod
