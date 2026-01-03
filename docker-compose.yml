@@ -45,6 +45,7 @@ services:
       - db
     ports:
       - "8080:8080"
+      - "8083:8083"  # Actuator port
     environment:
       JAVA_OPTS: "-Xms256m -Xmx768m"
       SPRING_PROFILES_ACTIVE: prod
