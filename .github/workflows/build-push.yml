@@ -33,4 +33,3 @@ jobs:
           push: true
           tags: |
             ghcr.io/gloziksoft/insurance-app:${{ github.sha }}
-            ghcr.io/gloziksoft/insurance-app:prod
