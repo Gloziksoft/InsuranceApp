@@ -38,7 +38,7 @@ services:
   # ☕ Spring Boot aplikácia
   # ===============================
   app:
-    image: ghcr.io/gloziksoft/insurance-app:latest
+    image: ghcr.io/gloziksoft/insurance-app:prod
     container_name: springboot_insurance_app
     restart: always
     depends_on:
