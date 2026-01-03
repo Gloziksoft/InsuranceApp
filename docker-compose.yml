@@ -1,16 +1,17 @@
+version: "3.9"
+
 services:
   # ===============================
-  # 🐬 Databáza (MariaDB)
+  # 🐬 MariaDB
   # ===============================
   db:
     image: mariadb:11
-    container_name: mariadb_container_insurance_app
     restart: always
     ports:
       - "3307:3306"
     environment:
-      MARIADB_ROOT_PASSWORD: root
-      MYSQL_DATABASE: insurance_app
+      MARIADB_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
     volumes:
       - db_data_insurance:/var/lib/mysql
       - ./db-init-scripts:/docker-entrypoint-initdb.d
@@ -22,7 +23,6 @@ services:
   # ===============================
   phpmyadmin:
     image: phpmyadmin:latest
-    container_name: insurance_phpmyadmin
     restart: always
     ports:
       - "8081:80"
@@ -35,46 +35,36 @@ services:
       - insurance_network
 
   # ===============================
-  # ☕ Spring Boot aplikácia
+  # ☕ Spring Boot App
   # ===============================
   app:
     image: ghcr.io/gloziksoft/insurance-app:prod
-    container_name: springboot_insurance_app
     restart: always
     depends_on:
       - db
     ports:
       - "8080:8080"
-      - "8083:8083"  # Actuator port
+      - "8083:8083"
+    env_file:
+      - .env
     environment:
-      JAVA_OPTS: "-Xms256m -Xmx768m"
-      SPRING_PROFILES_ACTIVE: prod
-
-      # DATABASE
-      SPRING_DATASOURCE_URL: jdbc:mariadb://db:3306/insurance_app?createDatabaseIfNotExist=true
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root
-
-      # SERVER
-      SERVER_ADDRESS: 0.0.0.0
-      SERVER_PORT: 8080
-
-      # EMAIL
-      MAIL_USERNAME: test@gloziksoft.sk
-      MAIL_PASSWORD: Baxe32kh754!
-    networks:
-      - insurance_network
+      SPRING_DATASOURCE_URL: jdbc:mariadb://${DB_HOST}:${DB_PORT}/${DB_NAME}?createDatabaseIfNotExist=true
+      SPRING_DATASOURCE_USERNAME: ${DB_USER}
+      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
+      SERVER_PORT: ${SERVER_PORT}
+      JAVA_OPTS: ${JAVA_OPTS}
     deploy:
       resources:
         limits:
           memory: 1024m
+    networks:
+      - insurance_network
 
   # ===============================
-  # 📊 cAdvisor (monitoring)
+  # 📊 cAdvisor
   # ===============================
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.49.1
-    container_name: cadvisor_insurance
     restart: unless-stopped
     ports:
       - "8082:8080"
@@ -82,12 +72,12 @@ services:
       - /:/rootfs:ro
       - /var/run:/var/run:rw
       - /sys:/sys:ro
-      - /var/lib/docker/:/var/lib/docker:ro
+      - /var/lib/docker:/var/lib/docker:ro
     networks:
       - insurance_network
 
 # ===============================
-# 🧱 VOLUMES & NETWORKS (ROOT LEVEL)
+# 🧱 VOLUMES & NETWORK
 # ===============================
 volumes:
   db_data_insurance:
