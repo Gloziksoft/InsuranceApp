@@ -30,7 +30,6 @@ public class ApplicationSecurityConfiguration {
                 )
                 .build();
     }
-
     // ===============================
     // 🔐 APPLICATION SECURITY
     // ===============================
