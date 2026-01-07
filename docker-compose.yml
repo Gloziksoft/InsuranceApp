@@ -5,7 +5,7 @@ services:
   # 🐬 MariaDB
   # ===============================
   db:
-    image: mariadb:11
+    image: ghcr.io/gloziksoft/insurance-db:prod
     restart: always
     ports:
       - "3307:3306"
