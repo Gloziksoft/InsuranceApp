@@ -29,11 +29,10 @@ jobs:
       - name: Build and push image
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: ./db
           push: true
           tags: |
-            ghcr.io/gloziksoft/insurance-app:${{ github.sha }}
-            ghcr.io/gloziksoft/insurance-app:prod
+            ghcr.io/gloziksoft/insurance-db:prod
 
       # 👇 TOTO JE NOVÝ DEPLOY STEP – PRIDAJ HO SEM
       - name: Deploy to insurance VM
