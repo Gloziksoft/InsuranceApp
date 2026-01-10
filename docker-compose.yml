@@ -39,7 +39,6 @@ services:
   # ===============================
   app:
     image: ghcr.io/gloziksoft/insurance-app:prod
-    container_name: insurance-app-app
     restart: always
     depends_on:
       db:
@@ -48,6 +47,11 @@ services:
       - "8080:8080"
     env_file:
       - .env
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mariadb://db:3306/insurance_app
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
     networks:
       - insurance_network
 
