@@ -32,9 +32,7 @@ jobs:
           context: .
           push: true
           tags: |
-            ghcr.io/gloziksoft/insurance-app:${{ github.sha }}
             ghcr.io/gloziksoft/insurance-app:prod
-      # 👇 TOTO JE NOVÝ DEPLOY STEP – PRIDAJ HO SEM
       - name: Deploy to insurance VM
         uses: appleboy/ssh-action@v1.0.3
         with:
