@@ -5,7 +5,7 @@ services:
   # 🐬 MariaDB
   # ===============================
   db:
-    image: ghcr.io/gloziksoft/insurance-db:prod
+    image: mariadb:11
     restart: always
     ports:
       - "3307:3306"
@@ -44,13 +44,9 @@ services:
       - db
     ports:
       - "8080:8080"
-
-    # ⬇️ JEDINÝ ZDROJ KONFIGURÁCIE
     env_file:
       - .env
 
-    # ❌ ŽIADNE SPRING_DATASOURCE_* TU
-    # ❌ ŽIADNE DB_HOST / DB_PORT
     environment:
       SERVER_PORT: ${SERVER_PORT}
       JAVA_OPTS: ${JAVA_OPTS}
