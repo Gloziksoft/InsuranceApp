@@ -17,6 +17,4 @@ class PoistenieAppApplicationTests {
 	public String test() {
 		return "Hello world!";
 	}
-
-
 }
