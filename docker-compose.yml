@@ -1,15 +1,9 @@
 version: "3.9"
 
 services:
-  # ===============================
-  # 🐬 MariaDB
-  # ===============================
   db:
     image: mariadb:11
-    container_name: mariadb_container_insurance_app
     restart: always
-    ports:
-      - "3307:3306"
     environment:
       MARIADB_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
@@ -19,9 +13,6 @@ services:
     networks:
       - insurance_network
 
-  # ===============================
-  # 🧮 PhpMyAdmin
-  # ===============================
   phpmyadmin:
     image: phpmyadmin:latest
     restart: always
@@ -35,9 +26,6 @@ services:
     networks:
       - insurance_network
 
-  # ===============================
-  # ☕ Spring Boot App
-  # ===============================
   app:
     image: ghcr.io/gloziksoft/insurance-app:prod
     restart: always
@@ -47,23 +35,9 @@ services:
       - "8080:8080"
     env_file:
       - .env
-    environment:
-      SPRING_DATASOURCE_URL: jdbc:mariadb://${DB_HOST}:${DB_PORT}/${DB_NAME}?createDatabaseIfNotExist=true
-      SPRING_DATASOURCE_USERNAME: ${DB_USER}
-      SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
-      SERVER_PORT: ${SERVER_PORT}
-      JAVA_OPTS: ${JAVA_OPTS}
-    deploy:
-      resources:
-        limits:
-          memory: 1024m
-
     networks:
       - insurance_network
 
-  # ===============================
-  # 📊 cAdvisor
-  # ===============================
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.49.1
     restart: unless-stopped
@@ -77,9 +51,6 @@ services:
     networks:
       - insurance_network
 
-# ===============================
-# 🧱 VOLUMES & NETWORK
-# ===============================
 volumes:
   db_data_insurance:
 
