@@ -14,11 +14,6 @@ services:
     volumes:
       - db_data_insurance:/var/lib/mysql
       - ./db-init-scripts:/docker-entrypoint-initdb.d
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 10s
-      timeout: 5s
-      retries: 15
     networks:
       - insurance_network
 
