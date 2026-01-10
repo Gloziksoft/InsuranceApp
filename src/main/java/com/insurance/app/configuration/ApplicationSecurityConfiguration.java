@@ -28,6 +28,7 @@ public class ApplicationSecurityConfiguration {
                 )
                 .build();
     }
+
     // ===============================
     // 🔐 APPLICATION SECURITY
     // ===============================
@@ -35,7 +36,6 @@ public class ApplicationSecurityConfiguration {
     @Order(1)
     public SecurityFilterChain applicationSecurityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .securityMatcher("/**")
                 .authorizeHttpRequests(auth -> auth
 
                         .requestMatchers("/insurance/*/events/reports/**").hasRole("ADMIN")
@@ -72,6 +72,8 @@ public class ApplicationSecurityConfiguration {
                         .logoutUrl("/account/logout")
                         .permitAll()
                 )
+                // 🔑 KRITICKÉ PRE REVERSE PROXY
+                .csrf(csrf -> csrf.disable())
                 .build();
     }
 
