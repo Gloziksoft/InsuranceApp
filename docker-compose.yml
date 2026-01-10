@@ -1,8 +1,12 @@
 version: "3.9"
 
 services:
+  # ===============================
+  # 🐬 MariaDB
+  # ===============================
   db:
     image: mariadb:11
+    container_name: insurance-app-db
     restart: always
     environment:
       MARIADB_ROOT_PASSWORD: ${DB_PASSWORD}
@@ -11,15 +15,19 @@ services:
       - db_data_insurance:/var/lib/mysql
       - ./db-init-scripts:/docker-entrypoint-initdb.d
     healthcheck:
-      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
       retries: 15
     networks:
       - insurance_network
 
+  # ===============================
+  # 🧮 phpMyAdmin
+  # ===============================
   phpmyadmin:
     image: phpmyadmin:latest
+    container_name: insurance-app-phpmyadmin
     restart: always
     ports:
       - "8081:80"
@@ -31,11 +39,16 @@ services:
     networks:
       - insurance_network
 
+  # ===============================
+  # ☕ Spring Boot App
+  # ===============================
   app:
     image: ghcr.io/gloziksoft/insurance-app:prod
+    container_name: insurance-app-app
     restart: always
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     ports:
       - "8080:8080"
     env_file:
@@ -43,8 +56,12 @@ services:
     networks:
       - insurance_network
 
+  # ===============================
+  # 📊 cAdvisor
+  # ===============================
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.49.1
+    container_name: insurance-app-cadvisor
     restart: unless-stopped
     ports:
       - "8082:8080"
@@ -56,6 +73,9 @@ services:
     networks:
       - insurance_network
 
+# ===============================
+# 🧱 Volumes & Network
+# ===============================
 volumes:
   db_data_insurance:
 
