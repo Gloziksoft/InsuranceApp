@@ -2,6 +2,8 @@ services:
   db:
     image: ghcr.io/gloziksoft/insurance-db:prod
     restart: always
+    env_file:
+      - .env
     environment:
       MARIADB_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}

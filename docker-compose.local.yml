@@ -1,0 +1,26 @@
+services:
+  db:
+    image: mariadb:11.8
+    restart: always
+    ports:
+      - "${DB_PORT}:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: ${DB_PASSWORD}
+      MARIADB_DATABASE: ${DB_NAME}
+    volumes:
+      - db_data_insurance:/var/lib/mysql
+      - ./db-init-scripts:/docker-entrypoint-initdb.d:ro
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    restart: always
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+    depends_on:
+      - db
+
+volumes:
+  db_data_insurance:
