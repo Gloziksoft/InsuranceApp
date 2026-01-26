@@ -43,6 +43,7 @@ jobs:
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: |
             cd /opt/insurance-app
+            export COMPOSE_PROJECT_NAME=insuranceapp
             docker compose down --remove-orphans
             docker compose pull
             docker compose up -d
