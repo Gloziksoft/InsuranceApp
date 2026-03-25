@@ -11,7 +11,7 @@ A simple web application for managing insurance records, built with **Java**, **
 The MySQL database runs on port **8081**. To start it, run:
 
 ```bash
-docker-compose up -d
+docker compose -f docker-compose.local.yml up -d
 ```
 
 > ✅ Make sure Docker is installed and running.
