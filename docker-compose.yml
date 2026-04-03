@@ -33,6 +33,10 @@ services:
       - "8080:8080"
     env_file:
       - .env
+    environment:
+      SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
+      JAVA_TOOL_OPTIONS: "-XX:+UseContainerSupport -XX:MaxRAMPercentage=60.0"
+    mem_limit: 512m   # 🔥 kľúčový fix
     networks:
       - insurance_network
 
