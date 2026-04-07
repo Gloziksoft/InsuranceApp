@@ -1,7 +1,10 @@
+version: "3.9"
+
 services:
+
   db:
     image: ghcr.io/gloziksoft/insurance-db:prod
-    restart: always
+    restart: unless-stopped
     env_file:
       - .env
     environment:
@@ -15,7 +18,7 @@ services:
 
   phpmyadmin:
     image: phpmyadmin:latest
-    restart: always
+    restart: unless-stopped
     ports:
       - "8081:80"
     environment:
@@ -28,14 +31,16 @@ services:
 
   app:
     image: ghcr.io/gloziksoft/insurance-app:prod
-    restart: always
+    restart: unless-stopped
     ports:
       - "8080:8080"
     env_file:
       - .env
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
-      JAVA_TOOL_OPTIONS: "-XX:+UseContainerSupport -XX:MaxRAMPercentage=60.0"
+      JAVA_TOOL_OPTIONS: "-Xms128m -Xmx256m -XX:+UseSerialGC"
+    depends_on:
+      - db
     networks:
       - insurance_network
 
@@ -49,6 +54,10 @@ services:
       - /var/run:/var/run:rw
       - /sys:/sys:ro
       - /var/lib/docker:/var/lib/docker:ro
+    command:
+      - "--housekeeping_interval=30s"
+      - "--docker_only=true"
+      - "--disable_metrics=percpu,sched,tcp,udp,disk,process"
     networks:
       - insurance_network
 
