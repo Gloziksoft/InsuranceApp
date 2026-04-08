@@ -34,7 +34,7 @@ services:
       - "8080:8080"
 
     # 🔥 DÔLEŽITÉ (RAM + CPU)
-    mem_limit: 512m
+    mem_limit: 400m
     cpus: 0.5
 
     env_file:
