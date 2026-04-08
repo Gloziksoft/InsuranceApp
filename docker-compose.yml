@@ -33,17 +33,18 @@ services:
     ports:
       - "8080:8080"
 
-    # 🔥 DÔLEŽITÉ (RAM + CPU)
     mem_limit: 512m
     cpus: 0.5
 
     env_file:
       - .env
+
+    # 🔥 JVM FIXNE (NAJDÔLEŽITEJŠIE)
+    entrypoint: >
+      java -Xms256m -Xmx384m -jar app.jar
+
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
-
-      # 🔥 JVM tuning (správne)
-      JAVA_TOOL_OPTIONS: "-XX:+UseContainerSupport -XX:MaxRAMPercentage=60.0"
 
     networks:
       - insurance_network
