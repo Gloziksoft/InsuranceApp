@@ -40,8 +40,8 @@ services:
       - .env
 
     # 🔥 JVM FIXNE (NAJDÔLEŽITEJŠIE)
-    entrypoint:
-      ["java", "-Xms256m", "-Xmx384m", "-jar", "app.jar"]
+    entrypoint: >
+      java -Xms256m -Xmx384m -jar app.jar
 
     environment:
       SPRING_PROFILES_ACTIVE: ${SPRING_PROFILES_ACTIVE}
