@@ -227,3 +227,5 @@ http://localhost:8080
 Tento projekt je licencovaný pod MIT licenciou.
 
 -----------------------------------------------
+
+Deployment pipeline verified after infrastructure cleanup.
