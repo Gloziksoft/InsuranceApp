@@ -47,4 +47,9 @@ jobs:
             export COMPOSE_PROJECT_NAME=insuranceapp
             docker compose pull
             docker compose up -d --force-recreate --no-deps app
+            
+            echo "=== DOCKER STATS ==="
             docker stats --no-stream
+            
+            echo "=== CLEANUP UNUSED IMAGES ==="
+            docker image prune -f
