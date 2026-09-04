@@ -34,3 +34,30 @@ After a successful application deployment, the VM now runs:
 
 ```bash
 docker image prune -f
+```
+This removes unused dangling Docker images created by previous deployments
+and prevents old application image layers from unnecessarily consuming disk space.
+
+Insurance production test:
+
+Before cleanup:
+
+Docker images: 39
+Image storage: 8.736 GB
+Reclaimable: 2.429 GB
+VM disk usage: ~45%
+
+After automatic cleanup:
+
+Docker images: 6
+Image storage: 2.245 GB
+Reclaimable: 1.344 GB
+VM disk usage: ~30%
+
+The cleanup removed old unused Docker images while keeping all active
+application, database, and cAdvisor containers running.
+
+The cleanup is now part of the automatic GitHub Actions production
+deployment workflow and runs after the application deployment.
+
+=========================================================================
