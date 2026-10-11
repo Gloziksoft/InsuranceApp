@@ -8,7 +8,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 public class ApplicationSecurityConfiguration {
@@ -20,7 +19,7 @@ public class ApplicationSecurityConfiguration {
     @Order(0)
     public SecurityFilterChain actuatorSecurityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .securityMatcher(new AntPathRequestMatcher("/actuator/**"))
+                .securityMatcher(("/actuator/**"))
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session ->

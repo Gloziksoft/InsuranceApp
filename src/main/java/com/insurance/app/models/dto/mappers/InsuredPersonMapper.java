@@ -41,6 +41,7 @@ public interface InsuredPersonMapper {
      */
     @Mapping(target = "insuredPerson", ignore = true)
     @Mapping(target = "policyHolder", ignore = true)
+    @Mapping(target = "events", ignore = true)
     InsuranceEntity toEntity(InsuranceDTO dto);
 
     /**
