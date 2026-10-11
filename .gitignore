@@ -40,3 +40,4 @@ env.*
 ### VS Code ###
 .vscode/
 
+backup/

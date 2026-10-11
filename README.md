@@ -1,76 +1,47 @@
 # 🛡️ InsuranceApp
 
-A simple web application for managing insurance records, built with **Java**, **Spring Boot**, **Thymeleaf**, and **Bootstrap**.
+A web application for managing insurance records, built with **Java**, **Spring Boot**, **Spring Security**, **Thymeleaf**, and **Bootstrap**.
 
 ---
 
-## 🚀 How to Run the Project
+## 🚀 Run the Project
 
-### 1️⃣ Start the Database via Docker
+The complete local setup and run instructions are documented here:
 
-The MySQL database runs on port **8081**. To start it, run:
+👉 **[docs/RUN.md](docs/RUN.md)**
 
-```bash
-docker compose -f docker-compose.local.yml up -d
-```
+The guide covers:
 
-> ✅ Make sure Docker is installed and running.
-
-The database is initialized automatically (check `docker-compose.yml` for details).
-
----
-IN WINDOWS, INTELLIJ IDEA, + DB VIA XAMPP.
-Alternatively, if you want to run in Windows, the DB backup is attached and you must import it sooner.
-FILE:
-insurance_app.sql
-
-Also, you must update the `application.properties` file like this:
-
-```
-properties
-
-spring.application.name=InsuranceApp
-spring.datasource.url=jdbc:mariadb://localhost:3306/insurance_app?createDatabaseIfNotExist=true
-spring.datasource.username=root
-spring.datasource.password=
-spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
-
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.format_sql=true
-
-```
----
-
-### 2️⃣ Run the Application in IntelliJ IDEA
-
-1. Open the project in **IntelliJ IDEA**.
-2. Run the main class: `PoistenieAppApplication.java`.
-3. Access the app at:
-
-
-http://localhost:8080
+- prerequisites
+- starting the MariaDB database with Docker Compose
+- running the Spring Boot application
+- accessing the application locally
+- stopping the local environment
 
 ---
 
 ## 👥 User Roles and Registration
 
-- 👤 **Admin** can manage all insured users.
+- 👤 **Admin** can manage all insured persons.
 - 📝 **New users** can register through the registration form.
-- 🔒 Regular users can only view/edit their own profile.
+- 🔒 Regular users have access to their own permitted data.
+
+No test passwords or production credentials are stored in this repository.
 
 ---
 
-## 🔐 Test Login Credentials
+## 🔐 Password Reset
 
-| Role              | Email                        | Password |
-|-------------------|------------------------------|----------|
-| **Admin**         | `admin@test.com`             | `123`    |
-| **Regular User**  | `user@test.com`              | `123`    |
-| **Admin-created** | `martinnovak@test.com`       | `123`    |
-|                   | `luciakovacova@test.com`     | `123`    |
+The application supports password reset by email.
 
-> ℹ️ Passwords are temporarily reduced to 3 characters for testing.
+- reset tokens are generated as UUIDs
+- reset links are valid for 15 minutes
+- a token is invalidated after a successful password reset
+- production database schema changes are managed through **Flyway**
+
+Production troubleshooting and solved deployment issues are documented in:
+
+`docs/troubleshooting/`
 
 ---
 
@@ -84,7 +55,7 @@ http://localhost:8080
 
 <p float="left">
   <img src="screenshots/detail-of-the-insured.png" width="700" alt="Profile" />
-  <img src="screenshots/list-of-insured-persons.png" width="700" alt="List of insurance policies" />
+  <img src="screenshots/list-of-insured-persons.png" width="700" alt="List of insured persons" />
   <img src="screenshots/list-of-insurances.png" width="700" alt="List of insurances" />
 </p>
 
@@ -99,11 +70,42 @@ http://localhost:8080
 ## 🛠️ Technologies Used
 
 - Java 17+
-- Spring Boot & Spring Security
+- Spring Boot
+- Spring Security
 - Thymeleaf
 - Bootstrap 5
-- MySQL (via Docker)
+- MariaDB
+- Flyway
 - Maven
+- Docker / Docker Compose
+- JUnit / Mockito
+- Prometheus / Grafana
+
+---
+
+## 🧪 Tests
+
+The project uses automated tests with JUnit and Mockito.
+
+Run the test suite with:
+
+```bash
+mvn clean test
+```
+
+---
+
+## 📚 Documentation
+
+Additional technical documentation is available in:
+
+```text
+docs/
+├── RUN.md
+└── troubleshooting/
+```
+
+The troubleshooting documentation records important development, deployment, infrastructure, and production issues together with their solutions.
 
 ---
 
@@ -115,118 +117,63 @@ This project is licensed under the MIT License.
 
 # 🛡️ PoistenieApp
 
-Jednoduchá webová aplikácia na správu poistenia, vytvorená pomocou **Java**, **Spring Boot**, **Thymeleaf** a **Bootstrapu**.
+Webová aplikácia na správu poistenia vytvorená pomocou **Java**, **Spring Boot**, **Spring Security**, **Thymeleaf** a **Bootstrapu**.
 
----
+## 🚀 Spustenie projektu
 
-## 🚀 Ako spustiť projekt
+Kompletný návod na lokálne spustenie aplikácie je v:
 
-### 1️⃣ Spustenie databázy cez Docker
+👉 **[docs/RUN.md](docs/RUN.md)**
 
-MySQL databáza beží na porte **8081**. Spustenie:
+V návode je popísané:
 
-```bash
-docker-compose up -d
-```
-
-> ✅ Vyžaduje nainštalovaný a spustený Docker.
-
-Databáza sa inicializuje automaticky (viď `docker-compose.yml`).
-
----
-Vo WINDOWS, INTELLIJ IDEA, + DB CEZ XAMPP.
-Prípadne ak chceš spustiť vo Windows tak zaloha DB je priložená a musíš ju skorej naimportovať.
-SÚBOR:
-insurance_app.sql
-
-Zároveň musíš upraviť súbor `application.properties` nasledovne:
-
-```
-properties
-
-spring.application.name=InsuranceApp
-spring.datasource.url=jdbc:mariadb://localhost:3306/insurance_app?createDatabaseIfNotExist=true
-spring.datasource.username=root
-spring.datasource.password=
-spring.datasource.driver-class-name=org.mariadb.jdbc.Driver
-
-spring.jpa.hibernate.ddl-auto=update
-spring.jpa.show-sql=true
-spring.jpa.properties.hibernate.format_sql=true
-
-```
-
----
-
-### 2️⃣ Spustenie aplikácie v IntelliJ IDEA
-
-1. Otvor projekt v **IntelliJ IDEA**.
-2. Spusť hlavnú Spring Boot triedu: `PoistenieAppApplication.java`.
-3. Aplikácia beží na adrese:
-
-http://localhost:8080
-
----
+- čo je potrebné mať nainštalované
+- spustenie MariaDB cez Docker Compose
+- spustenie Spring Boot aplikácie
+- adresa lokálnej aplikácie
+- zastavenie lokálneho prostredia
 
 ## 👥 Používateľské roly a registrácia
 
 - 👤 **Admin** môže spravovať všetkých poistencov.
 - 📝 **Nový používateľ** sa môže zaregistrovať cez registračný formulár.
-- 🔒 Bežný používateľ má prístup iba k svojmu profilu.
+- 🔒 Bežný používateľ má prístup k povoleným údajom podľa svojej role.
 
----
+V repozitári nie sú uložené testovacie heslá ani produkčné prihlasovacie údaje.
 
-## 🔐 Prihlasovacie údaje na testovanie
+## 🔐 Obnova hesla
 
-| Rola               | Email                        | Heslo |
-|--------------------|------------------------------|--------|
-| **Admin**          | `admin@test.com`             | `123`  |
-| **Používateľ**     | `user@test.com`              | `123`  |
-| **Vytvorení adminom** | `martinnovak@test.com`    | `123`  |
-|                    | `luciakovacova@test.com`     | `123`  |
+Aplikácia podporuje obnovu hesla prostredníctvom e-mailu.
 
-> ℹ️ Heslá sú dočasne skrátené kvôli jednoduchému testovaniu.
+- reset token je UUID
+- platnosť tokenu je 15 minút
+- po úspešnej zmene hesla sa token zneplatní
+- zmeny produkčnej databázovej schémy spravuje Flyway
 
----
+Technická dokumentácia a troubleshooting sú v:
 
-## 🖼️ Ukážky obrazoviek
+```text
+docs/troubleshooting/
+```
 
-<p float="left">
-  <img src="screenshots/home.png" width="700" alt="Domovská stránka" />
-  <img src="screenshots/login.png" width="700" alt="Prihlásenie" />
-  <img src="screenshots/registration.png" width="700" alt="Registrácia" />
-</p>
+## 🧪 Testy
 
-<p float="left">
-  <img src="screenshots/detail-of-the-insured.png" width="700" alt="Profil poistenca" />
-  <img src="screenshots/list-of-insurances.png" width="700" alt="Zoznam poistencov" />
-  <img src="screenshots/list-of-insured-persons.png" width="700" alt="Zoznam poistencou" />
-</p>
+Testy je možné spustiť:
 
-<p float="left">
-  <img src="screenshots/edit.png" width="700" alt="Úprava údajov" />
-</p> 
+```bash
+mvn clean test
+```
 
-> 📂 Všetky screenshoty sú uložené v priečinku `screenshots/`.
+## 📚 Dokumentácia
 
---- 
-
-## 🛠️ Použité technológie
-
-- Java 17+
-- Spring Boot & Spring Security
-- Thymeleaf
-- Bootstrap 5
-- MySQL (cez Docker)
-- Maven
+```text
+docs/
+├── RUN.md
+└── troubleshooting/
+```
 
 ---
 
 ## 📄 Licencia
 
-Tento projekt je licencovaný pod MIT licenciou.
-
------------------------------------------------
-
-Deployment pipeline verified after infrastructure cleanup.
-
+Projekt je licencovaný pod MIT licenciou.
