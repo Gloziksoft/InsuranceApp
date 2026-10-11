@@ -135,6 +135,7 @@ public class InsuranceController {
                          RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             model.addAttribute("persons", insuredPersonService.findAll());
+            model.addAttribute("insuranceTypes", InsuranceType.values());
             return "pages/insurance/create";
         }
 
@@ -168,6 +169,7 @@ public class InsuranceController {
                          RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             model.addAttribute("persons", insuredPersonService.findAll());
+            model.addAttribute("insuranceTypes", InsuranceType.values());
             return "pages/insurance/edit";
         }
 

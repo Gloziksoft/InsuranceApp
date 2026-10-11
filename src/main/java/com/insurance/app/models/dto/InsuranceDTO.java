@@ -3,6 +3,7 @@ package com.insurance.app.models.dto;
 import com.insurance.app.data.enums.InsuranceType;
 import jakarta.validation.constraints.*;
 import org.springframework.format.annotation.DateTimeFormat;
+import com.insurance.app.validation.ValidInsuranceDates;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -10,6 +11,7 @@ import java.time.LocalDate;
 /**
  * Data Transfer Object for insurance data.
  */
+@ValidInsuranceDates
 public class InsuranceDTO {
 
     @NotNull(message = "Poistený je povinný.")
@@ -40,8 +42,8 @@ public class InsuranceDTO {
     private String insuredPersonFirstName; // insured person's first name
     private String insuredPersonLastName; // insured person's last name
 
-    private String policyHolderFirstName; // policy holder's first name
-    private String policyHolderLastName; // policy holder's last name
+    private String policyHolderFirstName; // policy holder first name
+    private String policyHolderLastName; // policy holder last name
 
     // Getters and setters
     public Long getInsuredPersonId() {

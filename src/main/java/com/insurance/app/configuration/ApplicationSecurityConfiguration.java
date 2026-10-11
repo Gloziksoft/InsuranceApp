@@ -56,7 +56,9 @@ public class ApplicationSecurityConfiguration {
                                 "/about-us",
                                 "/",
                                 "/account/register",
-                                "/account/login"
+                                "/account/login",
+                                "/account/forgot-password",
+                                "/account/reset-password"
                         ).permitAll()
 
                         .anyRequest().authenticated()

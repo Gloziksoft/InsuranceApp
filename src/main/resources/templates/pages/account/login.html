@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="sk" xmlns:th="http://www.w3.org/1999/xhtml">
 <head th:replace="~{fragments/layout.html :: head}"></head>
 
 <body class="d-flex flex-column min-vh-100">
@@ -32,8 +32,15 @@
             <button type="submit" class="btn btn-primary btn-block">Prihlásiť sa</button>
         </form>
 
-        <!-- Link to registration page -->
+        <!-- Link to password recovery -->
         <div class="text-center mt-3">
+            <a th:href="@{/account/forgot-password}" class="text-primary">
+                Zabudli ste heslo?
+            </a>
+        </div>
+
+        <!-- Link to registration page -->
+        <div class="text-center mt-2">
             <p>Nemáte účet? <a th:href="@{/account/register}" class="text-primary">Registrácia</a></p>
         </div>
     </div>
