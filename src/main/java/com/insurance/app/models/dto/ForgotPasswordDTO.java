@@ -8,9 +8,8 @@ import jakarta.validation.constraints.Size;
 public class ForgotPasswordDTO {
 
     @NotBlank(message = "Email musí byť zadaný.")
-    @Email(message = "Zadajte platnú e-mailovú adresu.")
     @Pattern(
-            regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
+            regexp = "^$|^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
             message = "Zadajte platnú e-mailovú adresu."
     )
     @Size(max = 254, message = "Email môže mať maximálne 254 znakov.")

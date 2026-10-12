@@ -8,11 +8,11 @@ public class ResetPasswordDTO {
     private String token;
 
     @NotBlank(message = "Heslo je povinné.")
-    @Size(min = 8, message = "Heslo musí mať aspoň 8 znakov.")
+    @Size(min = 8, max = 72, message = "Heslo musí mať 8 až 72 znakov.")
     private String password;
 
     @NotBlank(message = "Potvrdenie hesla je povinné.")
-    @Size(min = 8, message = "Potvrdené heslo musí mať aspoň 8 znakov.")
+    @Size(min = 8, max = 72, message = "Potvrdené heslo musí mať 8 až 72 znakov.")
     private String confirmPassword;
 
     public String getToken() {

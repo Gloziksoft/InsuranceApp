@@ -59,7 +59,8 @@
                        class="form-control"/>
                 <small class="text-danger d-block"
                        style="min-height: 20px;"
-                       th:errors="*{email}">
+                       th:if="${#fields.hasErrors('email')}"
+                       th:text="${#fields.errors('email')[0]}">
                 </small>
             </div>
 

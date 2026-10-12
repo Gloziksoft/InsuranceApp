@@ -49,10 +49,24 @@
                            class="fw-bold text-primary"
                            th:text="${insuredPerson.firstName + ' ' + insuredPerson.lastName}">
                         </a>
+                        <br>
+                        <small class="text-muted" th:text="${insuredPerson.email}"></small>
                     </td>
 
                     <!-- Display insured person's address -->
-                    <td th:text="${insuredPerson.street + ' ' + insuredPerson.city + ' ' + insuredPerson.postalCode}"></td>
+                    <td>
+                        <span th:if="${#strings.isEmpty(insuredPerson.street)
+                            and #strings.isEmpty(insuredPerson.city)
+                            and #strings.isEmpty(insuredPerson.postalCode)}">
+                            Adresa neuvedená
+                        </span>
+
+                        <span th:unless="${#strings.isEmpty(insuredPerson.street)
+                            and #strings.isEmpty(insuredPerson.city)
+                            and #strings.isEmpty(insuredPerson.postalCode)}"
+                              th:text="${insuredPerson.street + ' ' + insuredPerson.city + ' ' + insuredPerson.postalCode}">
+                        </span>
+                    </td>
 
                     <!-- Edit and delete actions -->
                     <td class="text-end">

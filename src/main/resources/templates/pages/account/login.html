@@ -8,10 +8,16 @@
 <header th:replace="~{fragments/layout.html :: header}"></header>
 
 <!-- Success flash message -->
-<div class="py-2 flash-message message-success" th:text="${success}" th:if="${success}"></div>
+<div class="py-2 flash-message message-success" th:if="${success}">
+    <span th:text="${success}"></span>
+    <button type="button" class="flash-close" aria-label="Close">&times;</button>
+</div>
 
 <!-- Error flash message when login fails -->
-<div class="py-2 flash-message message-error" th:if="${param.error}">Invalid email or password.</div>
+<div class="py-2 flash-message message-error" th:if="${param.error}">
+    <span>Invalid email or password.</span>
+    <button type="button" class="flash-close" aria-label="Close">&times;</button>
+</div>
 
 <!-- Main login form section -->
 <div class="d-flex justify-content-center align-items-center" style="min-height: 80vh;">
