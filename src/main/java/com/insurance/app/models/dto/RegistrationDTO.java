@@ -16,10 +16,18 @@ public class RegistrationDTO {
 
     @NotBlank(message = "Meno musí byť zadané.")
     @Size(max = 50, message = "Meno môže mať maximálne 50 znakov.")
+    @Pattern(
+            regexp = "^$|^[\\p{L}]+(?:[ '\\-][\\p{L}]+)*$",
+            message = "Meno obsahuje nepovolené znaky."
+    )
     private String firstName;
 
     @NotBlank(message = "Priezvisko musí byť zadané.")
     @Size(max = 50, message = "Priezvisko môže mať maximálne 50 znakov.")
+    @Pattern(
+            regexp = "^$|^[\\p{L}]+(?:[ '\\-][\\p{L}]+)*$",
+            message = "Priezvisko obsahuje nepovolené znaky."
+    )
     private String lastName;
 
     @NotBlank(message = "Email musí byť zadaný.")

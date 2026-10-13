@@ -73,6 +73,12 @@
                        class="form-control"/>
                 <small class="text-danger d-block"
                        style="min-height: 20px;"
+                       th:if="${#strings.isEmpty(registrationDTO.password) and #fields.hasErrors('password')}">
+                    Heslo je povinné.
+                </small>
+                <small class="text-danger d-block"
+                       style="min-height: 20px;"
+                       th:if="${!#strings.isEmpty(registrationDTO.password) and #fields.hasErrors('password')}"
                        th:errors="*{password}">
                 </small>
             </div>
@@ -86,6 +92,12 @@
                        class="form-control"/>
                 <small class="text-danger d-block"
                        style="min-height: 20px;"
+                       th:if="${#strings.isEmpty(registrationDTO.confirmPassword) and #fields.hasErrors('confirmPassword')}">
+                    Potvrdenie hesla je povinné.
+                </small>
+                <small class="text-danger d-block"
+                       style="min-height: 20px;"
+                       th:if="${!#strings.isEmpty(registrationDTO.confirmPassword) and #fields.hasErrors('confirmPassword')}"
                        th:errors="*{confirmPassword}">
                 </small>
             </div>
