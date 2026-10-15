@@ -29,13 +29,15 @@ public class RegistrationDTO {
     )
     private String lastName;
 
+
     @NotBlank(message = "Email musí byť zadaný.")
     @Pattern(
-            regexp = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$",
+            regexp = "^(?:\\s*|[A-Za-z0-9_%+-]+(?:\\.[A-Za-z0-9_%+-]+)*@(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\\.)+[A-Za-z]{2,63})$",
             message = "Zadajte platnú e-mailovú adresu."
     )
     @Size(max = 254, message = "Email môže mať maximálne 254 znakov.")
     private String email;
+
 
     @NotBlank(message = "Heslo je povinné.")
     @Size(min = 8, max = 72, message = "Heslo musí mať 8 až 72 znakov.")
